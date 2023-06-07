@@ -49,12 +49,14 @@ class AllOutletSalesTiles extends StatelessWidget {
                           Text(
                             tittle,
                             style: Styles.poppins.copyWith(color: Colors.black),
+                             overflow: TextOverflow.ellipsis,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "$quantity",
                               style: Styles.poppins18w600,
+                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],

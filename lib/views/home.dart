@@ -2,7 +2,7 @@ import 'package:admin/common/app_styles_colors.dart';
 import 'package:admin/common/reusable%20widgets/text_field_prefix_icon.dart';
 import 'package:admin/views/All%20Outlets/allOutletSales.dart';
 import 'package:admin/views/Operation/operation.dart';
-import 'package:admin/views/Sales/sales.dart';
+import 'package:admin/views/Tables/tables.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -21,9 +21,8 @@ class _HomeState extends State<Home> {
   int currentIndex = 0;
   int allOutletCurrentIndex = 0;
   List pages = [
-    const Sales(),
+    const Tables(),
     const Operation(),
-    Container(),
     Container(),
     Container(),
   ];
@@ -466,7 +465,7 @@ class _HomeState extends State<Home> {
             },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 5),
-              width: MediaQuery.of(context).size.width * 0.5,
+              //width: MediaQuery.of(context).size.width * 0.5,
               decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(5)),
@@ -477,13 +476,10 @@ class _HomeState extends State<Home> {
                     padding: const EdgeInsets.only(
                       left: 10,
                     ),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.38,
-                      child: Text(
-                        dropdownValue,
-                        style: Styles.poppins16w400,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    child: Text(
+                      dropdownValue,
+                      style: Styles.poppins16w400,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   // const Gap(5),
@@ -613,7 +609,7 @@ class _HomeState extends State<Home> {
                     });
                   },
                   enableLineIndicator: true,
-                  lineIndicatorWidth: 5,
+                  lineIndicatorWidth: 4,
                   indicatorType: IndicatorType.Top,
 
                   // gradient: LinearGradient(
@@ -622,19 +618,15 @@ class _HomeState extends State<Home> {
 
                   customBottomBarItems: [
                     CustomBottomBarItems(
-                      label: 'Sales',
-                      icon: Icons.signal_cellular_alt,
+                      label: 'Tables',
+                      icon: Icons.restaurant_menu_sharp,
                     ),
                     CustomBottomBarItems(
-                      label: 'Operation',
-                      icon: Icons.settings,
+                      label: 'Orders',
+                      icon: Icons.receipt_long,
                     ),
                     CustomBottomBarItems(
-                        label: 'Supplier', icon: Icons.trolley),
-                    CustomBottomBarItems(
-                      label: 'Marketplace',
-                      icon: Icons.card_giftcard_rounded,
-                    ),
+                        label: 'Menu', icon: Icons.menu_book_rounded),
                     CustomBottomBarItems(
                       label: 'More',
                       icon: Icons.more_horiz,
