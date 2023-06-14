@@ -1,6 +1,7 @@
 import 'package:admin/common/app_styles_colors.dart';
 import 'package:admin/common/reusable%20widgets/text_field_prefix_icon.dart';
 import 'package:admin/views/All%20Outlets/allOutletSales.dart';
+import 'package:admin/views/Menu/menu.dart';
 import 'package:admin/views/Operation/operation.dart';
 import 'package:admin/views/Tables/tables.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
   List pages = [
     const Tables(),
     const Operation(),
-    Container(),
+    const Menu(),
     Container(),
   ];
   List allOutletPages = [

@@ -5,7 +5,7 @@ class TextfieldPrefixIcon extends StatefulWidget {
   //const name({super.key});
   TextEditingController controller;
   String hintText;
-  bool obscureText;
+  bool obscureText; 
   bool boolonTap;
   IconData? icon;
   TextfieldPrefixIcon(
