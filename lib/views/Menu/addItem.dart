@@ -20,6 +20,8 @@ class _AddItemState extends State<AddItem> {
   TextEditingController fg = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List items = [];
+  int? indexSelected;
+  List<String> types = ["Veg", "Non-Veg", "Egg-Made"];
   List tempItems = [];
   List serialNumbers = [];
   // List tempserialNumbers = [];
@@ -37,7 +39,7 @@ class _AddItemState extends State<AddItem> {
         serialNumbers.add(element["SName"]);
       }
       setState(() {
-        serialNumber = serialNumbers.length;
+        serialNumber = serialNumbers.isEmpty ? 0 : serialNumbers.length;
         serialNumberController.text = serialNumber.toString();
       });
 
@@ -220,13 +222,101 @@ class _AddItemState extends State<AddItem> {
                         //  _menuItem.price = double.parse(value!);
                       },
                     ),
-                    const Gap(35),
+                    const Gap(20),
+                    Text(
+                      "Please select type of item.",
+                      style: Styles.poppins16w400,
+                    ),
+                    const Gap(5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              indexSelected = 0;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: Styles.myradius,
+                                boxShadow: Styles.myShadow,
+                                color: indexSelected == 0
+                                    ? Colors.green
+                                    : Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                types[0],
+                                style: Styles.poppins16w400.copyWith(
+                                  color: indexSelected != 0
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Gap(10),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              indexSelected = 1;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: Styles.myradius,
+                                boxShadow: Styles.myShadow,
+                                color: indexSelected == 1
+                                    ? Colors.red
+                                    : Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                types[1],
+                                style: Styles.poppins16w400.copyWith(
+                                  color: indexSelected != 1
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Gap(10),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              indexSelected = 2;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: Styles.myradius,
+                                boxShadow: Styles.myShadow,
+                                color: indexSelected == 2
+                                    ? Colors.yellow
+                                    : Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                types[0],
+                                style: Styles.poppins16w400
+                                    .copyWith(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Gap(25),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           print(
-                              "${serialNumberController.text} ${name.text} ${rate.text} ${qtx.text} ${fg.text}");
+                              "$indexSelected ${serialNumberController.text} ${name.text} ${rate.text} ${qtx.text} ${fg.text}");
 
                           // TODO: Save the menu item to your data source
                           // e.g., call a function to add it to a database or list
@@ -244,8 +334,12 @@ class _AddItemState extends State<AddItem> {
                               "item": name.text,
                               "RATE": int.parse(rate.text),
                               "Qtx": int.parse(qtx.text),
-                              "FG": fg.text
+                              "FG": fg.text,
+                              "type": indexSelected == null
+                                  ? ""
+                                  : types[indexSelected ?? 0]
                             });
+                            indexSelected = null;
                           });
                           serialNumbers
                               .add(int.parse(serialNumberController.text));

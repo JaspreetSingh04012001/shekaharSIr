@@ -26,11 +26,12 @@ class _TextfieldPrefixIconState extends State<TextfieldPrefixIcon> {
     return TextField(
         controller: widget.controller,
         obscureText: widget.obscureText,
-        style: Styles.poppins16w400,
+        style: Styles.poppins12,
         decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.never,
-          hintStyle: Styles.poppins16w400,
+          hintStyle: Styles.poppins12,
           hintText: widget.hintText,
+          
           suffixIcon: widget.boolonTap
               ? InkWell(
                   onTap: () {

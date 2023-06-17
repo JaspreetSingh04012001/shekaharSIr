@@ -15,7 +15,7 @@ class AllOutletSales extends StatefulWidget {
 class _AllOutletSalesState extends State<AllOutletSales>
     with TickerProviderStateMixin {
   TabController? controller;
-  double? avatarSize = 15;
+  double? avatarSize = 12;
   var date;
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _AllOutletSalesState extends State<AllOutletSales>
       body: SingleChildScrollView(
         child: Column(
           children: [
-            
             // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             //   FloatingActionButton.extended(
             //       extendedPadding: EdgeInsets.zero,
@@ -44,103 +43,106 @@ class _AllOutletSalesState extends State<AllOutletSales>
 
             // ]),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               child: Column(
                 children: [
-
                   Container(
-              decoration: BoxDecoration(
-                               borderRadius: BorderRadius.circular(10),
-                  color: Colors.white, boxShadow: Styles.myShadow),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "DashBoard",
-                      style: Styles.poppins16w400,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      await showRoundedDatePicker(
-                        height: 270,
-
-                        theme: ThemeData(
-                            // primaryColor: Colors.red,
-                            primarySwatch: MaterialColor(
-                          const Color.fromARGB(255, 255, 176, 170).value,
-                          const <int, Color>{
-                            50: Color.fromARGB(255, 255, 176, 170),
-                            100: Color.fromARGB(255, 255, 176, 170),
-                            200: Color.fromARGB(255, 255, 176, 170),
-                            300: Color.fromARGB(255, 255, 176, 170),
-                            400: Color.fromARGB(255, 255, 176, 170),
-                            500: Color.fromARGB(255, 255, 176, 170),
-                            600: Color.fromARGB(255, 255, 176, 170),
-                            700: Color.fromARGB(255, 255, 176, 170),
-                            800: Color.fromARGB(255, 255, 176, 170),
-                            900: Color.fromARGB(255, 255, 176, 170),
-                          },
-                        )
-                            // accentColor: Colors.blue,
-                            // textColor: Colors.white,
-                            // backgroundColor: Colors.blue,
-                            // borderColor: Colors.white,
-                            // iconColor: Colors.white,
-                            //textTheme: TextTheme()
-                            ),
-                        // background: Colors.red,
-                        context: context,
-
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(DateTime.now().year - 1),
-                        lastDate: DateTime(DateTime.now().year + 1),
-                        borderRadius: 16,
-                      ).then((value) {
-                        final DateFormat formatter = DateFormat('dd-MM-yyyy');
-                        setState(() {
-                          if (value == null) {
-                            date = "Select date";
-                          } else {
-                            //value.day.toString();
-                        
-                            date = formatter.format(value);
-                          }
-                        });
-                        return null;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.shade100,
-                                  spreadRadius: 3,
-                                  blurRadius: 3,offset: Offset(1, 3))
-                            ]),
-                        child: Padding(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: Styles.myShadow),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            date == null ? "Select Date" : "$date",
-                            style: Styles.poppins16w400,
+                            "DashBoard",
+                            style: Styles.poppins12,
                           ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () async {
+                            await showRoundedDatePicker(
+                              height: 270,
+
+                              theme: ThemeData(
+                                  // primaryColor: Colors.red,
+                                  primarySwatch: MaterialColor(
+                                const Color.fromARGB(255, 255, 176, 170).value,
+                                const <int, Color>{
+                                  50: Color.fromARGB(255, 255, 176, 170),
+                                  100: Color.fromARGB(255, 255, 176, 170),
+                                  200: Color.fromARGB(255, 255, 176, 170),
+                                  300: Color.fromARGB(255, 255, 176, 170),
+                                  400: Color.fromARGB(255, 255, 176, 170),
+                                  500: Color.fromARGB(255, 255, 176, 170),
+                                  600: Color.fromARGB(255, 255, 176, 170),
+                                  700: Color.fromARGB(255, 255, 176, 170),
+                                  800: Color.fromARGB(255, 255, 176, 170),
+                                  900: Color.fromARGB(255, 255, 176, 170),
+                                },
+                              )
+                                  // accentColor: Colors.blue,
+                                  // textColor: Colors.white,
+                                  // backgroundColor: Colors.blue,
+                                  // borderColor: Colors.white,
+                                  // iconColor: Colors.white,
+                                  //textTheme: TextTheme()
+                                  ),
+                              // background: Colors.red,
+                              context: context,
+
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(DateTime.now().year - 1),
+                              lastDate: DateTime(DateTime.now().year + 1),
+                              borderRadius: 16,
+                            ).then((value) {
+                              final DateFormat formatter =
+                                  DateFormat('dd-MM-yyyy');
+                              setState(() {
+                                if (value == null) {
+                                  date = "Select date";
+                                } else {
+                                  //value.day.toString();
+
+                                  date = formatter.format(value);
+                                }
+                              });
+                              return null;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.shade100,
+                                        spreadRadius: 3,
+                                        blurRadius: 3,
+                                        offset: const Offset(1, 3))
+                                  ]),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  date == null ? "Select Date" : "$date",
+                                  style: Styles.poppins12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            Gap(15),
+                  ),
+                  const Gap(15),
                   Container(
-                    height: 146,
+                    height: 110,
                     width: width,
                     decoration: BoxDecoration(
                       boxShadow: Styles.myShadow,
@@ -153,44 +155,54 @@ class _AllOutletSalesState extends State<AllOutletSales>
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                              child: Center(
-                            child: Container(
-                              //color: Colors.red,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      "Total Sales",
-                                      style: Styles.poppins16w400,
-                                    ),
-                                  ),
-                                  // const Gap(5),
-                                  Text(
-                                    "31,500.00",
-                                    style: Styles.poppins28w600,
-                                  ),
-                                  // const Gap(5),
-                                  Text(
-                                    "of 2 Outlets",
-                                    style: Styles.poppins16w400
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  // const Gap(10),
-                                ],
-                              ),
-                            ),
-                          )),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.only(
+                              top: 5,
+                            ),
+                            child: Expanded(
+                                child: Center(
+                              child: Container(
+                                alignment: Alignment.center,
+                                //color: Colors.red,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Total Sales",
+                                      style: Styles.poppins14.copyWith(
+                                          color: const Color.fromARGB(
+                                              255, 0, 109, 4),
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    // const Gap(5),
+                                    Text(
+                                      "31,500.00",
+                                      style: Styles.poppins16w500,
+                                    ),
+                                    // const Gap(5),
+                                    Text(
+                                      "of 2 Outlets",
+                                      style: Styles.poppins12
+                                          .copyWith(color: Colors.grey),
+                                    ),
+                                    // const Gap(10),
+                                  ],
+                                ),
+                              ),
+                            )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
                             child: Row(
                               children: [
-                                const Icon(Icons.info, color: Colors.grey),
+                                const Icon(
+                                  Icons.info,
+                                  color: Colors.grey,
+                                  size: 15,
+                                ),
                                 Text(
                                   " Total Sales of 91 orders",
-                                  style: Styles.poppins16w400
+                                  style: Styles.poppins12
                                       .copyWith(color: Colors.grey),
                                 ),
                               ],
@@ -204,17 +216,21 @@ class _AllOutletSalesState extends State<AllOutletSales>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CircleAvatar(
+                              radius: 15,
                               // foregroundColor: Colors.black45,
                               child: Icon(
                                 Icons.bar_chart_sharp,
                                 color: Color.fromRGBO(0, 81, 147, 1),
+                                size: 15,
                               ),
                             ),
                             CircleAvatar(
+                              radius: 15,
                               // foregroundColor: Colors.black45,
                               child: Icon(
                                 Icons.more_vert,
                                 color: Color.fromRGBO(0, 81, 147, 1),
+                                size: 15,
                               ),
                             ),
                           ],
@@ -241,7 +257,7 @@ class _AllOutletSalesState extends State<AllOutletSales>
                       // Expanded(child: AllOutletSalesTiles()),
                       Expanded(
                           child: AllOutletSalesTiles(
-                        tittle: "Cash Collected",
+                        tittle: " Cash Collected",
                         circleAvatarChild: Icon(
                           Icons.payments,
                           color: Colors.green,

@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Dashboard",
-                    style: Styles.poppins16w400,
+                    style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
                 ExpansionTile(
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Orders and Billing",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.receipt_long,
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Tables",
-                    style: Styles.poppins16w400,
+                    style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.table_bar,
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Menu Management",
-                    style: Styles.poppins16w400,
+                     style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.receipt,
@@ -146,7 +146,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Inventory",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
                 ExpansionTile(
@@ -154,7 +154,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "CRM",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.groups,
@@ -177,7 +177,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Accounting",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.calculate,
@@ -200,7 +200,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Reports",
-                    style: Styles.poppins16w400,
+                       style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.summarize,
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "Configuration",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.settings,
@@ -246,7 +246,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "User Management",
-                    style: Styles.poppins16w400,
+                       style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.manage_accounts,
@@ -272,7 +272,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Marketplace",
-                    style: Styles.poppins16w400,
+                 style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
                 ListTile(
@@ -283,7 +283,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Community Bazar",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
                 ListTile(
@@ -294,7 +294,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Suppliers Hub",
-                    style: Styles.poppins16w400,
+                       style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
                 ExpansionTile(
@@ -302,7 +302,7 @@ class _HomeState extends State<Home> {
                   iconColor: Colors.black,
                   title: Text(
                     "User Logs",
-                    style: Styles.poppins16w400,
+                      style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                   leading: const Icon(
                     Icons.manage_accounts,
@@ -328,7 +328,7 @@ class _HomeState extends State<Home> {
                   ),
                   title: Text(
                     "Add New HO",
-                    style: Styles.poppins16w400,
+                     style: Styles.poppins12.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
               ],
@@ -360,7 +360,7 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text(
                                   " Select Outlets",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins14,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 IconButton(
@@ -411,10 +411,11 @@ class _HomeState extends State<Home> {
                                         leading: const Icon(
                                           Icons.store_mall_directory_outlined,
                                           color: Colors.black,
+                                          size: 15,
                                         ),
                                         title: Text(
                                           "All Outlets",
-                                          style: Styles.poppins,
+                                          style: Styles.poppins12,
                                         ),
                                       ),
                                     ),
@@ -442,14 +443,15 @@ class _HomeState extends State<Home> {
                                         leading: const Icon(
                                           Icons.store_mall_directory_outlined,
                                           color: Colors.black,
+                                          size: 15,
                                         ),
                                         title: Text(
                                           "Singh's Tandoor",
-                                          style: Styles.poppins,
+                                          style: Styles.poppins12,
                                         ),
                                         trailing: Text(
                                           "[id : 1009]",
-                                          style: Styles.poppins,
+                                          style: Styles.poppins12,
                                         ),
                                       ),
                                     ),
@@ -479,7 +481,8 @@ class _HomeState extends State<Home> {
                     ),
                     child: Text(
                       dropdownValue,
-                      style: Styles.poppins16w400,
+                      style: Styles.poppins12
+                          .copyWith(fontWeight: FontWeight.w400),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

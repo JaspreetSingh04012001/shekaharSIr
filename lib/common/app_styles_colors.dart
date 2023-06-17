@@ -11,6 +11,8 @@ class Styles {
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
   //static Transition? transition = Transition.leftToRight;
   static TextStyle poppins = GoogleFonts.poppins(color: Colors.black);
+  static TextStyle poppins12 = GoogleFonts.poppins(fontSize: 12,color: Colors.black);
+  static TextStyle poppins14 = GoogleFonts.poppins(fontSize: 14,color: Colors.black);
   static TextStyle poppins16w500 = GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
 
@@ -51,13 +53,14 @@ class Styles {
       fontSize: 44.6,
       fontWeight: FontWeight.w700,
       color: Colors.black);
-      static List<BoxShadow> myShadow = [
-                        BoxShadow(
-                            color: Colors.grey.shade200,
-                            spreadRadius: 3,
-                            blurRadius: 3 , offset: Offset(0, 2.5))
-                      ] ;
-          static BorderRadius  myradius =  BorderRadius.circular(10);            
+  static List<BoxShadow> myShadow = [
+    BoxShadow(
+        color: Colors.grey.shade200,
+        spreadRadius: 3,
+        blurRadius: 3,
+        offset: const Offset(0, 2.5))
+  ];
+  static BorderRadius myradius = BorderRadius.circular(10);
 
   // static BoxBorder? gardientBorder = const GradientBoxBorder(
   //   gradient: LinearGradient(
