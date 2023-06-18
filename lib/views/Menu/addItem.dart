@@ -23,34 +23,46 @@ class _AddItemState extends State<AddItem> {
   int? indexSelected;
   List<String> types = ["Veg", "Non-Veg", "Egg-Made"];
   List tempItems = [];
-  List serialNumbers = [];
+  List<int> serialNumbers = [];
   // List tempserialNumbers = [];
   int serialNumber = 0;
   final obj = Stroge();
+
+  assignSerialNumber() {
+    bool serialNumberFound = false;
+    int count = items.isEmpty ? 1 : items.length;
+
+    while (!serialNumberFound) {
+      if (serialNumbers.contains(count) ||
+          serialNumbers.contains(count.toString())) {
+        count++;
+      } else {
+        serialNumberFound = true;
+        setState(() {
+          serialNumber = count;
+          serialNumberController.text = serialNumber.toString();
+        });
+      }
+    }
+  }
+
   getSerialNumber({int? num}) async {
     items.clear();
     serialNumbers.clear();
 
     var data = obj.box.read("OutletID");
     if (data is List) {
-      items = [...data];
-
+      items = data.toSet().toList();
       for (var element in items) {
-        serialNumbers.add(element["SName"]);
+        if (element["SName"] is int) {
+          serialNumbers.add(element["SName"]);
+        }
+        if (element["SName"] is String) {
+          serialNumbers.add(int.parse(element["SName"]));
+        }
       }
-      setState(() {
-        serialNumber = serialNumbers.isEmpty ? 0 : serialNumbers.length;
-        serialNumberController.text = serialNumber.toString();
-      });
 
-      if (serialNumbers.contains(serialNumber)) {
-        setState(() {
-          serialNumber = serialNumbers.length + 1;
-          //  tempserialNumbers.add(serialNumber);
-          serialNumberController.text = serialNumber.toString();
-        });
-      }
-      //serialNumbers.remove(serialNumber);
+      assignSerialNumber();
     }
   }
 
@@ -108,7 +120,8 @@ class _AddItemState extends State<AddItem> {
                       // },
                       validator: (value) {
                         if (value!.isEmpty ||
-                            serialNumbers.contains(int.parse(value))) {
+                            serialNumbers.contains(int.parse(value)) ||
+                            serialNumbers.contains(value)) {
                           return 'Please enter different Serial Number';
                         }
                         return null;
@@ -170,6 +183,19 @@ class _AddItemState extends State<AddItem> {
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
+                      // keyboardType: TextInputType.numberWithOptions(signed: true),
+                      //   inputFormatters: [
+                      //     FilteringTextInputFormatter.allow(
+                      //         RegExp(r'^-?\d*\.?\d*$')),
+                      //     TextInputFormatter.withFunction((oldValue, newValue) {
+                      //       // Allow '-' symbol only at the beginning
+                      //       if (newValue.text == '-' && oldValue.text != '-') {
+                      //         return newValue.copyWith(text: '');
+                      //       }
+                      //       return newValue;
+                      //     }),
+                      //   ],
+
                       controller: qtx,
                       decoration: InputDecoration(
                         labelText: 'Qtx',
@@ -183,13 +209,13 @@ class _AddItemState extends State<AddItem> {
                         ),
                       ),
                       style: const TextStyle(fontSize: 16.0),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter the Quantity';
-                        }
-                        return null;
-                      },
+                      //  keyboardType: TextInputType.number,
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return 'Please enter the Quantity';
+                      //   }
+                      //   return null;
+                      // },
                       onSaved: (value) {
                         //  _menuItem.price = double.parse(value!);
                       },
@@ -222,12 +248,12 @@ class _AddItemState extends State<AddItem> {
                         //  _menuItem.price = double.parse(value!);
                       },
                     ),
-                    const Gap(20),
+                    const Gap(25),
                     Text(
                       "Please select type of item.",
                       style: Styles.poppins16w400,
                     ),
-                    const Gap(5),
+                    const Gap(10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -238,6 +264,8 @@ class _AddItemState extends State<AddItem> {
                             });
                           },
                           child: Container(
+                            alignment: Alignment.center,
+                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -245,7 +273,7 @@ class _AddItemState extends State<AddItem> {
                                     ? Colors.green
                                     : Colors.white),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: Text(
                                 types[0],
                                 style: Styles.poppins16w400.copyWith(
@@ -265,6 +293,8 @@ class _AddItemState extends State<AddItem> {
                             });
                           },
                           child: Container(
+                            alignment: Alignment.center,
+                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -272,7 +302,7 @@ class _AddItemState extends State<AddItem> {
                                     ? Colors.red
                                     : Colors.white),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: Text(
                                 types[1],
                                 style: Styles.poppins16w400.copyWith(
@@ -292,6 +322,8 @@ class _AddItemState extends State<AddItem> {
                             });
                           },
                           child: Container(
+                            alignment: Alignment.center,
+                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -299,9 +331,9 @@ class _AddItemState extends State<AddItem> {
                                     ? Colors.yellow
                                     : Colors.white),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: Text(
-                                types[0],
+                                types[2],
                                 style: Styles.poppins16w400
                                     .copyWith(color: Colors.black),
                               ),
@@ -322,18 +354,21 @@ class _AddItemState extends State<AddItem> {
                           // e.g., call a function to add it to a database or list
                           // SName : 11 item : Pav bhaji RATE : 10 Qtx : -17 FG : F
                           Stroge().addItemMenu(item: {
-                            "SName": serialNumberController.text,
+                            "SName": int.parse(serialNumberController.text),
                             "item": name.text,
                             "RATE": int.parse(rate.text),
-                            "Qtx": int.parse(qtx.text),
-                            "FG": fg.text
+                            "Qtx": qtx.text.isEmpty ? 0 : int.parse(qtx.text),
+                            "FG": fg.text,
+                            "type": indexSelected == null
+                                ? ""
+                                : types[indexSelected ?? 0]
                           });
                           setState(() {
                             tempItems.add({
                               "SName": int.parse(serialNumberController.text),
                               "item": name.text,
                               "RATE": int.parse(rate.text),
-                              "Qtx": int.parse(qtx.text),
+                              "Qtx": qtx.text.isEmpty ? 0 : int.parse(qtx.text),
                               "FG": fg.text,
                               "type": indexSelected == null
                                   ? ""
@@ -371,18 +406,38 @@ class _AddItemState extends State<AddItem> {
                 ),
               ),
             ),
+           
+           
+           
             SizedBox(
                 height: MediaQuery.of(context).size.height * 2,
                 child: ListView.builder(
                     itemCount: tempItems.length,
                     itemBuilder: (context, index) {
+                      //["Veg", "Non-Veg", "Egg-Made"];
+                      Color color = Colors.white;
+                      Color textColor = Colors.white;
+                      if (tempItems[index]["type"] == "Veg") {
+                        color = const Color.fromARGB(255, 58, 139, 60);
+                      }
+                      if (tempItems[index]["type"] == "Non-Veg") {
+                        color = Colors.red;
+                      }
+                      if (tempItems[index]["type"] == "Egg-Made") {
+                        color = Colors.yellow;
+                        textColor = Colors.black;
+                      }
+                      if (tempItems[index]["type"] == "") {
+                        //color = Colors.yellow;
+                        textColor = Colors.black;
+                      }
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 3, horizontal: 1),
                         child: Container(
                           height: 30,
                           width: width,
-                          color: Colors.yellowAccent,
+                          color: color,
                           child: Row(
                             children: [
                               Container(
@@ -390,7 +445,8 @@ class _AddItemState extends State<AddItem> {
                                 width: width * 0.1,
                                 child: Text(
                                   "${tempItems[index]["SName"]}",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins12
+                                      .copyWith(color: textColor),
                                 ),
                               ),
                               Container(
@@ -398,7 +454,8 @@ class _AddItemState extends State<AddItem> {
                                 width: width * 0.45,
                                 child: Text(
                                   "${tempItems[index]["item"]}",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins12
+                                      .copyWith(color: textColor),
                                 ),
                               ),
                               Container(
@@ -406,7 +463,8 @@ class _AddItemState extends State<AddItem> {
                                 width: width * 0.15,
                                 child: Text(
                                   "${tempItems[index]["RATE"]}",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins12
+                                      .copyWith(color: textColor),
                                 ),
                               ),
                               Container(
@@ -414,7 +472,8 @@ class _AddItemState extends State<AddItem> {
                                 width: width * 0.2,
                                 child: Text(
                                   "${tempItems[index]["Qtx"]}",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins12
+                                      .copyWith(color: textColor),
                                 ),
                               ),
                               Container(
@@ -422,7 +481,8 @@ class _AddItemState extends State<AddItem> {
                                 width: width * 0.1,
                                 child: Text(
                                   "${tempItems[index]["FG"]}",
-                                  style: Styles.poppins16w400,
+                                  style: Styles.poppins12
+                                      .copyWith(color: textColor),
                                 ),
                               ),
                             ],

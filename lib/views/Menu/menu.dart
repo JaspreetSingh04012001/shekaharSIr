@@ -1,6 +1,8 @@
 import 'package:admin/Services/Storage/outletMenu.dart';
 import 'package:admin/common/app_styles_colors.dart';
 import 'package:admin/views/Menu/addItem.dart';
+import 'package:admin/views/Menu/deleteItem.dart';
+import 'package:admin/views/Menu/editItem.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
@@ -21,7 +23,6 @@ class _MenuState extends State<Menu> {
       setState(() {
         items = [...data];
       });
-
     }
     obj.box.listenKey("OutletID", (value) {
       // print(value);
@@ -107,13 +108,29 @@ class _MenuState extends State<Menu> {
           : ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
+                Color color = Colors.white;
+                Color textColor = Colors.white;
+                if (items[index]["type"] == "Veg") {
+                  color = const Color.fromARGB(255, 58, 139, 60);
+                }
+                if (items[index]["type"] == "Non-Veg") {
+                  color = Colors.red;
+                }
+                if (items[index]["type"] == "Egg-Made") {
+                  color = Colors.yellow;
+                  textColor = Colors.black;
+                }
+                if (items[index]["type"] == "") {
+                  //color = Colors.yellow;
+                  textColor = Colors.black;
+                }
                 return Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 3, horizontal: 1),
                   child: Container(
                     height: 30,
                     width: width,
-                    color: Colors.amber,
+                    color: color,
                     child: Row(
                       children: [
                         Container(
@@ -121,7 +138,7 @@ class _MenuState extends State<Menu> {
                           width: width * 0.1,
                           child: Text(
                             "${items[index]["SName"]}",
-                            style: Styles.poppins16w400,
+                            style: Styles.poppins14.copyWith(color: textColor),
                           ),
                         ),
                         Container(
@@ -129,7 +146,7 @@ class _MenuState extends State<Menu> {
                           width: width * 0.45,
                           child: Text(
                             "${items[index]["item"]}",
-                            style: Styles.poppins16w400,
+                            style: Styles.poppins14.copyWith(color: textColor),
                           ),
                         ),
                         Container(
@@ -137,7 +154,7 @@ class _MenuState extends State<Menu> {
                           width: width * 0.15,
                           child: Text(
                             "${items[index]["RATE"]}",
-                            style: Styles.poppins16w400,
+                            style: Styles.poppins14.copyWith(color: textColor),
                           ),
                         ),
                         Container(
@@ -145,7 +162,7 @@ class _MenuState extends State<Menu> {
                           width: width * 0.2,
                           child: Text(
                             "${items[index]["Qtx"]}",
-                            style: Styles.poppins16w400,
+                            style: Styles.poppins14.copyWith(color: textColor),
                           ),
                         ),
                         Container(
@@ -153,7 +170,7 @@ class _MenuState extends State<Menu> {
                           width: width * 0.1,
                           child: Text(
                             "${items[index]["FG"]}",
-                            style: Styles.poppins16w400,
+                            style: Styles.poppins14.copyWith(color: textColor),
                           ),
                         ),
                       ],
@@ -177,16 +194,6 @@ class _MenuState extends State<Menu> {
             label: 'Add item in Menu',
             onPressed: () {
               Get.to(const AddItem());
-              // obj.addItemMenu(item: {
-              //   "SName": 11,
-              //   "item": "Pav bhaji",
-              //   "RATE": 10,
-              //   "Qtx": -17,
-              //   "FG": "F"
-              // });
-              // setState(() {
-              //   // _text = 'You pressed \"Let\'s start a run!\"';
-              // });
             },
             closeSpeedDialOnPressed: true,
           ),
@@ -196,9 +203,16 @@ class _MenuState extends State<Menu> {
             backgroundColor: Colors.red,
             label: 'Remove item from Menu',
             onPressed: () {
-              setState(() {
-                //  _text = 'You pressed \"Let\'s go for a walk!\"';
-              });
+              Get.to(const DeleteItem());
+            },
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.edit),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber,
+            label: 'Edit item on Menu',
+            onPressed: () {
+              Get.to(const EditItem());
             },
           ),
           //  Your other SpeedDialChildren go here.
