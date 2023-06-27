@@ -150,46 +150,49 @@ class _AllOutletSalesState extends State<AllOutletSales>
                       borderRadius: BorderRadius.circular(10),
                       //color: Colors.amber,
                     ),
-                    child: Row(children: [
-                      Expanded(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    child: Row(
                         children: [
+                      Flexible(
+                        child: Container(
+                         // color :Colors.blue,
+                        //  width: width - 20,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
                           Padding(
                             padding: const EdgeInsets.only(
                               top: 5,
                             ),
-                            child: Expanded(
-                                child: Center(
+                            child: Center(
                               child: Container(
-                                alignment: Alignment.center,
-                                //color: Colors.red,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Total Sales",
-                                      style: Styles.poppins14.copyWith(
-                                          color: const Color.fromARGB(
-                                              255, 0, 109, 4),
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    // const Gap(5),
-                                    Text(
-                                      "31,500.00",
-                                      style: Styles.poppins16w500,
-                                    ),
-                                    // const Gap(5),
-                                    Text(
-                                      "of 2 Outlets",
-                                      style: Styles.poppins12
-                                          .copyWith(color: Colors.grey),
-                                    ),
-                                    // const Gap(10),
-                                  ],
+                            alignment: Alignment.center,
+                            //color: Colors.red,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Total Sales",
+                                  style: Styles.poppins14.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 0, 109, 4),
+                                      fontWeight: FontWeight.w400),
                                 ),
+                                // const Gap(5),
+                                Text(
+                                  "31,500.00",
+                                  style: Styles.poppins16w500,
+                                ),
+                                // const Gap(5),
+                                Text(
+                                  "of 2 Outlets",
+                                  style: Styles.poppins12
+                                      .copyWith(color: Colors.grey),
+                                ),
+                                // const Gap(10),
+                              ],
+                            ),
                               ),
-                            )),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
@@ -208,32 +211,37 @@ class _AllOutletSalesState extends State<AllOutletSales>
                               ],
                             ),
                           )
-                        ],
-                      )),
-                      const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(
-                              radius: 15,
-                              // foregroundColor: Colors.black45,
-                              child: Icon(
-                                Icons.bar_chart_sharp,
-                                color: Color.fromRGBO(0, 81, 147, 1),
-                                size: 15,
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                       // color : Colors.yellow,
+                        child: const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: 15,
+                                // foregroundColor: Colors.black45,
+                                child: Icon(
+                                  Icons.bar_chart_sharp,
+                                  color: Color.fromRGBO(0, 81, 147, 1),
+                                  size: 15,
+                                ),
                               ),
-                            ),
-                            CircleAvatar(
-                              radius: 15,
-                              // foregroundColor: Colors.black45,
-                              child: Icon(
-                                Icons.more_vert,
-                                color: Color.fromRGBO(0, 81, 147, 1),
-                                size: 15,
+                              CircleAvatar(
+                                radius: 15,
+                                // foregroundColor: Colors.black45,
+                                child: Icon(
+                                  Icons.more_vert,
+                                  color: Color.fromRGBO(0, 81, 147, 1),
+                                  size: 15,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ]),

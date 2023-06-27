@@ -265,7 +265,6 @@ class _AddItemState extends State<AddItem> {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -294,7 +293,6 @@ class _AddItemState extends State<AddItem> {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -323,7 +321,6 @@ class _AddItemState extends State<AddItem> {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            width: 100,
                             decoration: BoxDecoration(
                                 borderRadius: Styles.myradius,
                                 boxShadow: Styles.myShadow,
@@ -406,9 +403,6 @@ class _AddItemState extends State<AddItem> {
                 ),
               ),
             ),
-           
-           
-           
             SizedBox(
                 height: MediaQuery.of(context).size.height * 2,
                 child: ListView.builder(

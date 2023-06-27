@@ -173,7 +173,8 @@ class _EditItemState extends State<EditItem> {
                                 (BuildContext context, StateSetter setStatee) {
                               return Padding(
                                 padding: const EdgeInsets.all(15.0),
-                                child: Container(
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
                                   child: SingleChildScrollView(
                                     child: Form(
                                       key: formKey,
@@ -313,9 +314,7 @@ class _EditItemState extends State<EditItem> {
                                             style: Styles.poppins16w400,
                                           ),
                                           const Gap(10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                          Wrap(
                                             children: [
                                               InkWell(
                                                 onTap: () {
@@ -460,9 +459,11 @@ class _EditItemState extends State<EditItem> {
                                                   _items[tempindex]["item"] =
                                                       name.text;
                                                   _items[tempindex]["RATE"] =
-                                                    int.parse(rate.text);
+                                                      int.parse(rate.text);
                                                   _items[tempindex]["Qtx"] =
-                                                      qtx.text.isEmpty ? 0 : int.parse(qtx.text);
+                                                      qtx.text.isEmpty
+                                                          ? 0
+                                                          : int.parse(qtx.text);
                                                   _items[tempindex]["FG"] =
                                                       fg.text;
                                                   _items[tempindex]["type"] =
@@ -473,7 +474,9 @@ class _EditItemState extends State<EditItem> {
                                                                   0];
                                                 });
 
-                                                 Stroge().box.write("OutletID", _items);
+                                                Stroge()
+                                                    .box
+                                                    .write("OutletID", _items);
 
                                                 name.clear();
                                                 rate.clear();

@@ -95,28 +95,26 @@ class AllOutletSalesTiles extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Expanded(
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.info,
-                      color: Colors.grey,
-                      size: 15,
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.info,
+                    color: Colors.grey,
+                    size: 15,
+                  ),
+                  const Gap(5),
+                  Expanded(
+                    child: Text(
+                      tittle2,
+                      maxLines: 1,
+                      style: Styles.poppins
+                          .copyWith(fontSize: 11, color: Colors.grey),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const Gap(5),
-                    Expanded(
-                      child: Text(
-                        tittle2,
-                        maxLines: 1,
-                        style: Styles.poppins
-                            .copyWith(fontSize: 11, color: Colors.grey),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ]),
