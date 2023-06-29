@@ -1,10 +1,12 @@
+import 'package:admin/views/Orders/tableOrder.dart';
 import 'package:admin/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-Future<void> main() async {  await GetStorage.init();
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -59,7 +61,9 @@ class MyApp extends StatelessWidget {
         ),
         // accentColor: Colors.blue,
       ),
-      home: const Home(),
+      home:
+           const TableOrder()
+         // const Home(),
     );
   }
 }

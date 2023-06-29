@@ -1,7 +1,11 @@
+import 'package:admin/test.dart';
 import 'package:admin/views/Tables/perpairingFoodTable.dart';
 import 'package:admin/views/Tables/vacantTables.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+
+import '../Orders/tableOrder.dart';
 
 class Tables extends StatefulWidget {
   const Tables({Key? key}) : super(key: key);
@@ -25,10 +29,20 @@ class _TablesState extends State<Tables> {
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  VacantTables(
-                    image: 'assets/1.jpg',
-                    number: 1,
-                    type: 'Normal',
+                  InkWell(
+                    onTap: () {
+                  //    Get.to(Test());
+                      Get.to(TableOrder());
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (context) {
+                      //   return const TableOrder();
+                      // }));
+                    },
+                    child: VacantTables(
+                      image: 'assets/1.jpg',
+                      number: 1,
+                      type: 'Normal',
+                    ),
                   ),
                   VacantTables(
                     image: 'assets/fastfood.png',
@@ -71,3 +85,4 @@ class _TablesState extends State<Tables> {
     );
   }
 }
+
