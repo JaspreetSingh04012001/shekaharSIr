@@ -90,6 +90,16 @@ class Styles {
         Color.fromARGB(255, 139, 40, 62)
       ]);
 
+ static ButtonStyle  mybuttonStyle = ElevatedButton.styleFrom(
+                            backgroundColor: Styles.primaryColor,
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          );
+
+
+
   static Color greenColor = const Color.fromARGB(255, 62, 188, 118);
   static Color textColor = const Color(0xFF3b3b3b);
   static Color bgColor = const Color.fromARGB(255, 231, 235, 236);

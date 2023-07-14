@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:admin/common/app_styles_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -64,10 +62,12 @@ ItemAlertDailog({required context}) {
                                     enabled: false,
                                     // controller: serialNumberController,
                                     // initialValue: "100",
-                                    keyboardType: Platform.isIOS
-                                        ? const TextInputType.numberWithOptions(
-                                            signed: true)
-                                        : TextInputType.number,
+                                    keyboardType:
+                                        //  Platform.isIOS
+                                        //     ? const
+                                        const TextInputType.numberWithOptions(
+                                            signed: true),
+                                    // : TextInputType.number,
 
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
@@ -115,10 +115,12 @@ ItemAlertDailog({required context}) {
                                   child: TextField(
                                     // controller: serialNumberController,
                                     //initialValue: serialNumber.toString(),
-                                    keyboardType: Platform.isIOS
-                                        ? const TextInputType.numberWithOptions(
-                                            signed: true)
-                                        : TextInputType.number,
+                                    keyboardType:
+                                        // Platform.isIOS
+                                        //     ? const
+                                        const TextInputType.numberWithOptions(
+                                            signed: true),
+                                    //  : TextInputType.number,
 
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
@@ -182,13 +184,7 @@ ItemAlertDailog({required context}) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Styles.primaryColor,
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
+                          style: Styles.mybuttonStyle,
                           onPressed: () {},
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
