@@ -1,6 +1,5 @@
-import 'package:admin/Services/Storage/sembestStorage.dart';
 import 'package:admin/helpers/initController.dart';
-import 'package:admin/views/splashScreen.dart';
+import 'package:admin/views/Auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -70,8 +69,9 @@ class MyApp extends StatelessWidget {
           ),
           // accentColor: Colors.blue,
         ),
-        home: const SplashScreen()
-        // const Login()
+        home:
+            // const SplashScreen()
+            const Login()
         // const Menu()
         // const TableOrder()
         // const Home(),

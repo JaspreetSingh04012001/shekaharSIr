@@ -1,10 +1,12 @@
-import 'package:admin/Models/captain.dart';
+
 import 'package:get/get.dart';
 
-class CaptainController extends GetxController {
+import '../Models/steward.dart';
 
- Captain? selectedCapatin ;
- void setSelectedCapatin(Captain cap){
+class StewardController extends GetxController {
+
+ Steward? selectedCapatin ;
+ void setSelectedCapatin(Steward cap){
    selectedCapatin = cap;
    update();
  }

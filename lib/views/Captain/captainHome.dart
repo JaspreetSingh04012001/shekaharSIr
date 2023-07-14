@@ -14,7 +14,7 @@ class CaptainHome extends StatelessWidget {
         appBar: AppBar(
             centerTitle: true,
             title: Text(
-              outletsController.selelctedOutlet ?? "",
+              outletsController.selelctedOutlet!.outletName ?? "",
               style: Styles.poppins12,
             )),
         body:

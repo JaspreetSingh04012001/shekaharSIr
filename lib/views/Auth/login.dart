@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:admin/Models/captain.dart';
-import 'package:admin/controllers/captainController.dart';
+import 'package:admin/Models/outlet.dart';
+import 'package:admin/Models/steward.dart';
+import 'package:admin/Models/table.dart' as t;
 import 'package:admin/controllers/outletsController.dart';
 import 'package:admin/views/Admin/adminHome.dart';
 import 'package:admin/views/OutletManager/managerHome.dart';
@@ -10,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 
-import '../Captain/captainHome.dart';
 import '../../common/app_styles_colors.dart';
 import '../../reuseable Widgets/customButton.dart';
+import '../Captain/captainHome.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -94,7 +95,6 @@ class _LoginState extends State<Login> {
                               .toList(),
                           value: selectedrole,
                           onChanged: (value) {
-                         
                             //print(value);
                             setState(() {
                               selectedrole = value;
@@ -112,10 +112,10 @@ class _LoginState extends State<Login> {
                                           data.containsKey('CaptainId')) {
                                         Get.find<OutletsController>()
                                             .setOutlet(data['outletId']);
-                                        Get.find<CaptainController>()
-                                            .setSelectedCapatin(Captain(
-                                                id: data['CaptainId'],
-                                                name: data['CaptainName']));
+                                        // Get.find<StewardController>()
+                                        //     .setSelectedCapatin(Captain(
+                                        //         id: data['CaptainId'],
+                                        //         name: data['CaptainName']));
                                         Get.to(const CaptainHome());
                                       } else {
                                         Get.showSnackbar(GetSnackBar(
@@ -226,23 +226,80 @@ class _LoginState extends State<Login> {
                   textfield,
                   CustomButton(
                     onTap: () {
+                      Get.find<OutletsController>().setOutletsList([
+                            Outlet.fromJson({
+                              'AutoCode': '0',
+                              'outletName': "All Outlets",
+                              'bar': true,
+                              'discontinue': false,
+                              'KITCHEN': '',
+                              'outletStartDate': DateTime.now(),
+                              'activeStewards': [
+                                Steward.fromJson({
+                                  'AutoCode': '0',
+                                  'Steward_Name': '',
+                                  'PHONE': '',
+                                  'ADDRESS': '',
+                                  'FNAME': '',
+                                  'ON_ROLL': '',
+                                  'STEW_TYPE': '',
+                                  'SELF_SRV': '',
+                                }),
+                              ],
+                              'tables': [
+                                t.Table.fromJson({
+                                  'isOcupied': false,
+                                  'isComplimentary': false,
+                                  'isNormal': false,
+                                  'isFastFood': false,
+                                  'isDelivery': false,
+                                  'isFoodprepairing': false,
+                                })
+                              ],
+                            }),
+                            Outlet.fromJson({
+                              'AutoCode': '1',
+                              'outletName': "jass Restaurant",
+                              'bar': true,
+                              'discontinue': false,
+                              'KITCHEN': '',
+                              'outletStartDate': DateTime.now(),
+                              'activeStewards': [
+                                Steward.fromJson({
+                                  'AutoCode': '0',
+                                  'Steward_Name': '',
+                                  'PHONE': '',
+                                  'ADDRESS': '',
+                                  'FNAME': '',
+                                  'ON_ROLL': '',
+                                  'STEW_TYPE': '',
+                                  'SELF_SRV': '',
+                                }),
+                              ],
+                              'tables': [
+                                t.Table.fromJson({
+                                  'isOcupied': false,
+                                  'isComplimentary': false,
+                                  'isNormal': true,
+                                  'isFastFood': false,
+                                  'isDelivery': false,
+                                  'isFoodprepairing': false,
+                                })
+                              ],
+                            }),
+                          ]);
                       switch (selectedrole) {
                         case 'Admin':
-                          Get.find<OutletsController>().setOutletsList([
-                            "All Outlets",
-                            "Singh's Tandoor",
-                            "jojos",
-                            "Pratiksha karein"
-                          ]);
+                          
                           Get.find<OutletsController>()
-                              .setOutlet("All Outlets");
-                          Get.to(const AdminHome());
+                              .setOutlet(0);
+                          Get.offAll(const AdminHome());
 
                           break;
                         case 'Outlet Manager':
                           Get.find<OutletsController>()
-                              .setOutlet("Singh's Tandoor");
-                          Get.to(const ManagerHome());
+                              .setOutlet(1);
+                          Get.offAll(const ManagerHome());
 
                           break;
                         case 'Captain':
