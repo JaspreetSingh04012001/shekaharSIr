@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import '../../common/app_styles_colors.dart';
 
 class PerpairingFoodTable extends StatefulWidget {
-  int number;
+  String number;
 
   String imageLink;
   String type;

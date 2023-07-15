@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../common/app_styles_colors.dart';
 
 class VacantTables extends StatefulWidget {
-  int number;
+  String number;
   bool isDelivery;
   String image;
   String type;

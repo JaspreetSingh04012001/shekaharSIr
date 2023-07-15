@@ -1,4 +1,3 @@
-
 import 'package:admin/Models/steward.dart';
 import 'package:admin/Models/table.dart';
 
@@ -22,7 +21,9 @@ class Outlet {
     outletStartDate = json['outletStartDate'];
     activeStewards = json['activeStewards'];
     tables = json['tables'];
-
+    tables?.forEach((element) {
+      print(element.toJson());
+    });
   }
   //  Map<String, dynamic> toJson() {
   //   final Map<String, dynamic> data = <String, dynamic>{};

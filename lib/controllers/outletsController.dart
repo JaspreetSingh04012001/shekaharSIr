@@ -1,10 +1,11 @@
 import 'package:admin/Models/outlet.dart';
+import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/views/Admin/BottomNav/more.dart';
 import 'package:admin/views/Admin/Drawer/outletsManagement.dart';
 import 'package:admin/views/OutletManager/managerOrders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:admin/Models/table.dart' as t;
 import '../views/All Outlets/allOutletSales.dart';
 import '../views/Menu/menu.dart';
 import '../views/Operation/operation.dart';
@@ -42,27 +43,36 @@ class OutletsController extends GetxController {
 //String? get  selelctedOutlet => selelctedOutlet ;
 
 //seters
-  int provideNewTableId() {
+  int provideNewOutletId() {
     if (_outLets == null || _outLets!.isEmpty) {
       return 1;
-    } else { int newId = 0;
-    List<int> oldIds =
-        _outLets!.map((e) => int.parse(e.AutoCode.toString())).toList();
+    } else {
+      int newId = 0;
+      List<int> oldIds =
+          _outLets!.map((e) => int.parse(e.AutoCode.toString())).toList();
 
-    while (newId <= _outLets!.length || oldIds.contains(newId)) {
-      newId = newId + 1;
+      while (newId <= _outLets!.length || oldIds.contains(newId)) {
+        newId = newId + 1;
+      }
+      return newId;
     }
-    return newId;}
-   
   }
 
   void setOutletsList(List<Outlet>? outLets) {
     _outLets = outLets;
+
     update();
   }
 
   void setOutlet(int index) {
     selelctedOutlet = _outLets![index];
+
+    Get.find<TablesController>().setTables(_outLets![index].tables);
+    update();
+  }
+
+  void updateTablesofOutlet(List<t.Table>? tables) {
+    _outLets![_outLets!.indexOf(selelctedOutlet!)].tables = tables;
     update();
   }
 
