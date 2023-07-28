@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:admin/Models/outlet.dart';
-import 'package:admin/Models/steward.dart';
-import 'package:admin/Models/table.dart' as t;
 import 'package:admin/controllers/outletsController.dart';
+import 'package:admin/controllers/storageController.dart';
 import 'package:admin/views/Admin/adminHome.dart';
 import 'package:admin/views/OutletManager/managerHome.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -226,109 +225,86 @@ class _LoginState extends State<Login> {
                   textfield,
                   CustomButton(
                     onTap: () {
-                      Get.find<OutletsController>().setOutletsList([
-                        Outlet.fromJson({
-                          'AutoCode': '0',
-                          'outletName': "All Outlets",
-                          'bar': true,
-                          'discontinue': false,
-                          'KITCHEN': '',
-                          'outletStartDate': DateTime.now(),
-                          'activeStewards': [
-                            Steward.fromJson({
-                              'AutoCode': '0',
-                              'Steward_Name': '',
-                              'PHONE': '',
-                              'ADDRESS': '',
-                              'FNAME': '',
-                              'ON_ROLL': '',
-                              'STEW_TYPE': '',
-                              'SELF_SRV': '',
-                            }),
-                          ],
-                          'tables': [
-                            t.Table.fromJson({
-                              'AutoCode': '0',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': false,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            })
-                          ],
-                        }),
-                        Outlet.fromJson({
-                          'AutoCode': '1',
-                          'outletName': "jass Restaurant",
-                          'bar': true,
-                          'discontinue': false,
-                          'KITCHEN': '',
-                          'outletStartDate': DateTime.now(),
-                          'activeStewards': [
-                            Steward.fromJson({
-                              'AutoCode': '0',
-                              'Steward_Name': '',
-                              'PHONE': '',
-                              'ADDRESS': '',
-                              'FNAME': '',
-                              'ON_ROLL': '',
-                              'STEW_TYPE': '',
-                              'SELF_SRV': '',
-                            }),
-                          ],
-                          'tables': [
-                            t.Table.fromJson({
-                              'AutoCode': '1',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': true,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            }),
-                            t.Table.fromJson({
-                              'AutoCode': '2',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': true,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            }),
-                            t.Table.fromJson({
-                              'AutoCode': '3',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': true,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            }),
-                            t.Table.fromJson({
-                              'AutoCode': '4',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': true,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            }),
-                            t.Table.fromJson({
-                              'AutoCode': '5',
-                              'isOcupied': false,
-                              'isComplimentary': false,
-                              'isNormal': true,
-                              'isFastFood': false,
-                              'isDelivery': false,
-                              'isFoodprepairing': false,
-                            }),
-                          ],
-                        }),
-                      ]);
+                      // Get.find<StorageController>().box.erase();
+                      List<dynamic>? data =
+                          Get.find<StorageController>().getOutletsFromStorage();
+                      if (data != null) {
+                        
+                        List<Outlet>? list = [];
+                        for (var element in data) {
+                          list.add(Outlet.fromJson(element));
+                        }
+
+                        Get.find<OutletsController>().setOutletsList(list);
+                      } else {
+                        Get.find<StorageController>().updateOutlets([
+                          Outlet.fromJson({
+                            'AutoCode': '0',
+                            'uniqueId': 'main',
+                            'outletName': "All Outlets",
+                            'bar': true,
+                            'discontinue': false,
+                            'KITCHEN': '',
+                            'outletStartDate': '',
+                            'activeStewards': [
+                              {
+                                'AutoCode': '0',
+                                'Steward_Name': '',
+                                'PHONE': '',
+                                'ADDRESS': '',
+                                'FNAME': '',
+                                'ON_ROLL': '',
+                                'STEW_TYPE': '',
+                                'SELF_SRV': '',
+                              }
+                            ],
+                            'tables': [
+                              {
+                                'AutoCode': '0',
+                                'isOcupied': false,
+                                'isComplimentary': false,
+                                'isNormal': false,
+                                'isFastFood': false,
+                                'isDelivery': false,
+                                'isFoodprepairing': false,
+                              }
+                            ],
+                          }),
+                          Outlet.fromJson({
+                            'AutoCode': '1',
+                            'uniqueId': 'js093113',
+                            'outletName': "jass Restaurant",
+                            'bar': true,
+                            'discontinue': false,
+                            'KITCHEN': '',
+                            'outletStartDate': '',
+                            // 'activeStewards': 
+                            // [
+                            //   {
+                            //     'AutoCode': '0',
+                            //     'Steward_Name': '',
+                            //     'PHONE': '',
+                            //     'ADDRESS': '',
+                            //     'FNAME': '',
+                            //     'ON_ROLL': '',
+                            //     'STEW_TYPE': '',
+                            //     'SELF_SRV': '',
+                            //   }
+                            // ],
+                          }),
+                        ]);
+
+                        Get.find<OutletsController>().setOutletsList(
+                            Get.find<StorageController>()
+                                .getOutletsFromStorage()!
+                                .map((e) => Outlet.fromJson(e))
+                                .toList());
+                      }
+
                       switch (selectedrole) {
                         case 'Admin':
                           Get.find<OutletsController>().setOutlet(0);
+
                           Get.offAll(const AdminHome());
 
                           break;

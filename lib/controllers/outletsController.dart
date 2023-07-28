@@ -1,11 +1,14 @@
 import 'package:admin/Models/outlet.dart';
+import 'package:admin/Models/steward.dart';
+import 'package:admin/controllers/inventoryController.dart';
+import 'package:admin/controllers/storageController.dart';
 import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/views/Admin/BottomNav/more.dart';
 import 'package:admin/views/Admin/Drawer/outletsManagement.dart';
 import 'package:admin/views/OutletManager/managerOrders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:admin/Models/table.dart' as t;
+
 import '../views/All Outlets/allOutletSales.dart';
 import '../views/Menu/menu.dart';
 import '../views/Operation/operation.dart';
@@ -29,6 +32,7 @@ class OutletsController extends GetxController {
     const More(),
     const OutletsManagement()
   ];
+  int? currentOutletIndex;
   Outlet? selelctedOutlet;
   List<Outlet>? _outLets;
   bool bottomNavVisible = true;
@@ -42,7 +46,64 @@ class OutletsController extends GetxController {
   String? selelctedtittle;
 //String? get  selelctedOutlet => selelctedOutlet ;
 
+  void updateOutletInStorage() {
+    outLets![currentOutletIndex ?? 0] = selelctedOutlet!;
+    Get.find<StorageController>().updateOutlets(outLets);
+  }
+
 //seters
+  void updateOutletDepartment(String department) {
+    if (selelctedOutlet!.departements == null) {
+      selelctedOutlet!.departements = [];
+      selelctedOutlet!.departements!.add(department);
+      updateOutletInStorage();
+    } else {
+      if (selelctedOutlet!.departements!.contains(department)) {
+        Get.snackbar("Name is taken", "try different name for this department",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } else {
+        selelctedOutlet!.departements!.add(department);
+        updateOutletInStorage();
+      }
+    }
+    update();
+  }
+
+  void updateOutletStewards(Steward stwaerd) {
+    if (selelctedOutlet!.activeStewards == null) {
+      selelctedOutlet!.activeStewards = [];
+      print(stwaerd.tojson());
+      selelctedOutlet!.activeStewards!.add(stwaerd);
+      updateOutletInStorage();
+    } else {
+      print(stwaerd.tojson());
+      selelctedOutlet!.activeStewards!.add(stwaerd);
+      updateOutletInStorage();
+    }
+    update();
+  }
+
+  void updateOutletCategories(String category) {
+    if (selelctedOutlet!.categories == null) {
+      selelctedOutlet!.categories = [];
+      selelctedOutlet!.categories!.add(category);
+      updateOutletInStorage();
+    } else {
+      if (selelctedOutlet!.categories!.contains(category)) {
+        Get.snackbar("Name is taken", "try different name for this category",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      } else {
+        selelctedOutlet!.categories!.add(category);
+        updateOutletInStorage();
+      }
+    }
+    update();
+  }
+
   int provideNewOutletId() {
     if (_outLets == null || _outLets!.isEmpty) {
       return 1;
@@ -65,15 +126,12 @@ class OutletsController extends GetxController {
   }
 
   void setOutlet(int index) {
+    currentOutletIndex = index;
     selelctedOutlet = _outLets![index];
 
-    Get.find<TablesController>().setTables(_outLets![index].tables);
     update();
-  }
-
-  void updateTablesofOutlet(List<t.Table>? tables) {
-    _outLets![_outLets!.indexOf(selelctedOutlet!)].tables = tables;
-    update();
+    Get.find<TablesController>().updateTables();
+    Get.find<InventoryController>().updateItemsList();
   }
 
   void setselelctedtittle(String name) {

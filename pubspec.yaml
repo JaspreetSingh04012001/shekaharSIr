@@ -56,6 +56,9 @@ dependencies:
   shelf_router: ^1.1.4
   sembast: ^3.4.9
   hive: ^2.2.3
+  number_text_input_formatter: ^1.0.0+6
+  just_debounce_it: ^4.1.0
+  throttling: ^1.0.0
   
 
 dev_dependencies:

@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   double? width;
   double? verPad;
   double? horPad;
+  AlignmentGeometry? alignment;
   final GestureTapCallback? onTap;
 
   CustomButton(
@@ -16,7 +17,8 @@ class CustomButton extends StatelessWidget {
       this.width,
       this.onTap,
       this.verPad,
-      this.horPad})
+      this.horPad,
+      this.alignment = Alignment.center})
       : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class CustomButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             vertical: verPad ?? 10, horizontal: horPad ?? 10),
         child: Container(
-          alignment: Alignment.center,
+          alignment: alignment,
           width: width,
           height: height,
           decoration: BoxDecoration(

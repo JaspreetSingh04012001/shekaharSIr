@@ -1,55 +1,82 @@
+import 'itemsVariation.dart';
+
 class Item {
-  String? AutoCode;
-  String? SName;
-  String? item;
-  String? Cuisine;
-  String? Deptt;
-  String? Rate;
-  String? Tax;
-  String? Trackable;
-  String? Recipie_Code;
-  String? Liquor;
-  String? Discountable;
-  String? Category;
-  String? Genre;
-  String? Discontinued;
-  String? GROUPS;
-  String? SECSTK;
-  String? RW_SSTK_ACD;
-  String? PEG_TYPE;
-  String? LARGE;
-  String? TAXABLE;
-  String? FORCEQTY;
-  String? QTY;
-  String? TQTY;
-  String? SELL_UOM;
-  String? UOM_ACODE;
-  String? ROLLBACK_;
-  String? DECIMAL;
-  String? PRODUCTION;
-  String? PROD_QTY;
-  String? PROD_UOM;
-  String? PROD_CONV;
-  String? SRVTAX;
-  String? BARCODE;
-  String? PUR_ITEM;
-  String? PUR_UOM;
-  String? PUR_CONV;
-  String? OPG_STK;
-  String? ASK_RATE;
-  String? ENB_SHELF_LIFE;
-  String? SL_VALUE;
-  String? SL_DURATION;
-  String? SL_DAYS;
-  String? BATCH_TYPE;
-  String? ROLLBK_PRD;
-  String? DLV_RATE;
-  String? OPG_STK_LOC;
-  String? RCP_ACTIVE;
-  String? CESS_PERC;
-  String? ICON_IDX;
-  String? USE_ALT_NAME;
-  String? ALT_NAME;
-  String? MIN_LEVEL;
- 
+  
+
+  int? autoNum;
+  String? autoCode;
+  String? createdAt;
+  String? shortName;
+  String? itemname;
+  String? department;
+  String? category;
+  String? type;
+  String? rate;
+  String? tax;
+  String? cess;
+  bool? inclusiveOrExclusive;
+  bool? discountable;
+  String? discount;
+  bool? discontinued;
+  bool? isFinishedGood;
+  String? qty;
+  String? sellUom;
+  String? altName;
+  bool? isRateDeciaml;
+  List<ItemVariation>? variations;
+  Item.fromjson(Map<String, dynamic> json) {
+    autoNum = json["autoNum"];
+    autoCode = json["autoCode"].toString();
+    createdAt = json["createdAt"].toString();
+    shortName = json["shortName"].toString();
+    itemname = json["itemname"].toString();
+    rate = json["rate"].toString();
+    department = json["department"];
+    tax = json["tax"].toString();
+    cess = json["cess"].toString();
+    inclusiveOrExclusive = json["inclusiveOrExclusive"];
+    discountable = json["discountable"];
+    discount = json["discount"].toString();
+    discontinued = json["discontinued"];
+    isFinishedGood = json["isFinishedGood"];
+    qty = json["qty"].toString();
+    sellUom = json["sellUom"].toString();
+    altName = json["altName"].toString();
+    category = json["category"];
+    type = json["type"];
+    isRateDeciaml = json["isRateDeciaml"];
+    if (json["variations"] != null) {
+      variations = [];
+      json["variations"].forEach((v) {
+        variations?.add(ItemVariation.fromjson(v));
+      });
+    }
+  }
+  tojson() {
+    Map<String, dynamic> data = {
+      "autoNum": autoNum,
+      "autoCode": autoCode,
+      "shortName": shortName,
+      "itemname": itemname,
+      "rate": rate,
+      "department": department,
+      "tax": tax,
+      "cess" : cess,
+      "inclusiveOrExclusive": inclusiveOrExclusive,
+      "discountable": discountable,
+      "discount": discount,
+      "discontinued": discontinued,
+      "isFinishedGood": isFinishedGood,
+      "qty": qty,
+      "sellUom": sellUom,
+      "altName": altName,
+      "category": category,
+      "type": type,
+      "isRateDeciaml": isRateDeciaml,
+    };
+    if (variations != null) {
+      data["variations"] = variations?.map((v) => v.tojson()).toList();
+    }
+    return data;
+  }
 }

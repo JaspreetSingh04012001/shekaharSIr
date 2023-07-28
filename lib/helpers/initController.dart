@@ -1,6 +1,5 @@
-import 'package:admin/Services/Storage/DbHive.dart';
-import 'package:admin/Services/Storage/sembestStorage.dart';
 import 'package:admin/controllers/captainController.dart';
+import 'package:admin/controllers/inventoryController.dart';
 import 'package:admin/controllers/outletsController.dart';
 import 'package:admin/controllers/storageController.dart';
 import 'package:admin/controllers/tablesController.dart';
@@ -12,5 +11,6 @@ init() async {
   Get.lazyPut(() => TablesController());
   // Get.lazyPut(() => DbHive());
   Get.lazyPut(() => StorageController());
-  Get.lazyPut(() => DbController());
+  Get.lazyPut(() => InventoryController());
+  //Get.lazyPut(() => DbController());
 }

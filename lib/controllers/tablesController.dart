@@ -1,33 +1,38 @@
 import 'package:admin/Models/table.dart';
-import 'package:admin/controllers/outletsController.dart';
+import 'package:admin/controllers/storageController.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 class TablesController extends GetxController {
+  List ids = [];
+
   List<Table>? tables;
   void setTables(List<Table>? tabless) {
     tables = tabless;
     update();
   }
 
-  void addTable(Table table) {
-    tables?.add(table);
-    Get.find<OutletsController>().updateTablesofOutlet(tables);
+  updateTables() {
+    tables = Get.find<StorageController>().getTablesFromStorage();
+    if (tables != null) {
+      for (var element in tables!) {
+        if (!ids.contains(element.id)) {
+          ids.add(element.id);
+        }
+      }
+    }
+
     update();
   }
 
-  void removeTable(String autoCode) {
-    tables?.removeWhere(
-      (element) {
-        if (element.autoCode == autoCode) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-    );
-    Get.find<OutletsController>().updateTablesofOutlet(tables);
+  void addTable(Table table) {
+    if (tables != null) {
+      tables?.add(table);
+    } else {
+      tables = [table];
+    }
+
     update();
+    Get.find<StorageController>().updateTablesInStorage(tables ?? []);
   }
 
   int provideNewTableId() {

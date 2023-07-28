@@ -4,14 +4,14 @@ import 'package:lottie/lottie.dart';
 import '../../common/app_styles_colors.dart';
 
 class PerpairingFoodTable extends StatefulWidget {
-  String number;
+  String tableId;
 
   String imageLink;
   String type;
   String tittle;
   PerpairingFoodTable(
       {Key? key,
-      required this.number,
+      required this.tableId,
       required this.imageLink,
       required this.type,
       required this.tittle})
@@ -38,7 +38,7 @@ class _PerpairingFoodTableState extends State<PerpairingFoodTable> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              "Table No.${widget.number}",
+              "Id : ${widget.tableId}",
               //  style: Styles.poppins16w400,
             ),
             Text(
@@ -48,7 +48,11 @@ class _PerpairingFoodTableState extends State<PerpairingFoodTable> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            Lottie.network(widget.imageLink, height: 80, fit: BoxFit.contain,),
+            Lottie.network(
+              widget.imageLink,
+              height: 80,
+              fit: BoxFit.contain,
+            ),
             Text(
               widget.type,
               //  style: Styles.poppins16w400,

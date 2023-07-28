@@ -14,7 +14,9 @@ class Styles {
   static TextStyle poppins12 =
       GoogleFonts.poppins(fontSize: 12, color: Colors.black);
   static TextStyle poppins14 =
-      GoogleFonts.poppins(fontSize: 14, color: Colors.black);
+      GoogleFonts.poppins(fontSize: 14, color: Colors.black ,);
+  static TextStyle poppins14w400 =
+      GoogleFonts.poppins(fontSize: 14, color: Colors.black ,fontWeight: FontWeight.w400);
   static TextStyle poppins16w500 = GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
 

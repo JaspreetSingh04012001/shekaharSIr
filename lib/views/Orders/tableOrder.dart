@@ -26,7 +26,7 @@ class _TableOrderState extends State<TableOrder> {
       child: Scaffold(
           appBar: AppBar(
             title: Text(
-              "Place Order for Table no.",
+              "Place Order for Table Id.",
               style: Styles.poppins18w600,
             ),
           ),

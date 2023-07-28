@@ -5,6 +5,7 @@ import '../app_styles_colors.dart';
 
 class DesignedTextField extends StatelessWidget {
   TextEditingController? controller;
+  void Function(String)? onChanged;
   TextInputType? keyboardType;
   String? labelText;
   String? Function(String?)? validate;
@@ -13,7 +14,7 @@ class DesignedTextField extends StatelessWidget {
       {Key? key,
       this.labelText,
       this.controller,
-      this.validate,
+      this.validate,this.onChanged,
       this.keyboardType,this.inputFormatters})
       : super(key: key);
 
@@ -22,6 +23,7 @@ class DesignedTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       inputFormatters: inputFormatters,
+      onChanged: onChanged,
       //initialValue: serialNumber.toString(),
       //
       keyboardType: keyboardType,

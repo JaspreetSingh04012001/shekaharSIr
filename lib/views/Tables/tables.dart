@@ -1,4 +1,6 @@
 import 'package:admin/Models/table.dart' as t;
+import 'package:admin/common/reusable%20widgets/designedTextField.dart';
+import 'package:admin/controllers/storageController.dart';
 import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
 import 'package:admin/views/Tables/perpairingFoodTable.dart';
@@ -26,128 +28,82 @@ class _TablesState extends State<Tables> {
     // final width = MediaQuery.of(context).size.width;
     return GetBuilder<TablesController>(builder: (tablesController) {
       return Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: tablesController.tables!.map((e) {
-                    if (e.isNormal as bool) {
-                      return !(e.isFoodprepairing as bool)
-                          ? VacantTables(
-                              number: e.autoCode,
-                              type: "Normal",
-                              image: 'assets/1.jpg')
-                          : PerpairingFoodTable(
-                              tittle: "Oder Preparing",
-                              imageLink:
-                                  'https://assets2.lottiefiles.com/packages/lf20_vkqybeu5/data.json',
-                              number: e.autoCode,
-                              type: 'Normal',
-                            );
-                    }
-                    if (e.isFastFood as bool) {
-                      return !(e.isFoodprepairing as bool)
-                          ? VacantTables(
-                              number: e.autoCode,
-                              type: 'Fast Food',
-                              image: 'assets/fastfood.png')
-                          : PerpairingFoodTable(
-                              tittle: "Prepairing",
-                              imageLink:
-                                  'https://assets8.lottiefiles.com/packages/lf20_s5tFhoBEWg.json',
-                              number: e.autoCode,
-                              type: 'Fast Food',
-                            );
-                    }
-                    if (e.isDelivery as bool) {
-                      return !(e.isFoodprepairing as bool)
-                          ? VacantTables(
-                              number: e.autoCode,
-                              type: 'Delivery',
-                              image: 'assets/delivery.png')
-                          : PerpairingFoodTable(
-                              tittle: "Prepairing",
-                              imageLink:
-                                  'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
-                              number: e.autoCode,
-                              type: 'Delivery',
-                            );
-                    }
-                    if (e.isComplimentary as bool) {
-                      return !(e.isFoodprepairing as bool)
-                          ? VacantTables(
-                              number: e.autoCode,
-                              type: 'Complimentary',
-                              image: 'assets/comp.jpg')
-                          : PerpairingFoodTable(
-                              tittle: "Prepairing",
-                              imageLink:
-                                  'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
-                              number: e.autoCode,
-                              type: 'Complimentary',
-                            );
-                    } else {
-                      return Container();
-                    }
-                  }).toList(),
-                  //  [
-                  //   InkWell(
-                  //     onTap: () {
-                  //   //    Get.to(Test());
-                  //       Get.to(TableOrder());
-                  //       // Navigator.of(context)
-                  //       //     .push(MaterialPageRoute(builder: (context) {
-                  //       //   return const TableOrder();
-                  //       // }));
-                  //     },
-                  //     child: VacantTables(
-                  //       image: 'assets/1.jpg',
-                  //       number: 1,
-                  //       type: 'Normal',
-                  //     ),
-                  //   ),
-                  //   VacantTables(
-                  //     image: 'assets/fastfood.png',
-                  //     number: 2,
-                  //     type: 'Fast Food',
-                  //   ),
-                  //   VacantTables(
-                  //     image: 'assets/delivery.png',
-                  //     number: 3,
-                  //     type: 'Delivery',
-                  //   ),
-                  //   PerpairingFoodTable(
-                  //     tittle: "Oder Preparing",
-                  //     imageLink:
-                  //         'https://assets2.lottiefiles.com/packages/lf20_vkqybeu5/data.json',
-                  //     number: 4,
-                  //     type: 'Normal',
-                  //   ),
-                  //   PerpairingFoodTable(
-                  //     tittle: "Prepairing",
-                  //     imageLink:
-                  //         'https://assets8.lottiefiles.com/packages/lf20_s5tFhoBEWg.json',
-                  //     number: 5,
-                  //     type: 'Fast Food',
-                  //   ),
-                  //   PerpairingFoodTable(
-                  //     tittle: "Delivering",
-                  //     imageLink:
-                  //         'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
-                  //     number: 5,
-                  //     type: 'Delivery',
-                  //   ),
-                  // ],
+        body: tablesController.tables == null
+            ? Center(
+                child: Text(
+                  "No tables exist",
+                  style: Styles.poppins14,
+                ),
+              )
+            : SingleChildScrollView(
+                child: Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: tablesController.tables!.map((e) {
+                      if (e.isNormal as bool) {
+                        return !(e.isFoodprepairing as bool)
+                            ? VacantTables(
+                                tableId: e.id ?? '',
+                                type: "Normal",
+                                image: 'assets/1.jpg')
+                            : PerpairingFoodTable(
+                                tittle: "Oder Preparing",
+                                imageLink:
+                                    'https://assets2.lottiefiles.com/packages/lf20_vkqybeu5/data.json',
+                                tableId: e.id ?? '',
+                                type: 'Normal',
+                              );
+                      }
+                      if (e.isFastFood as bool) {
+                        return !(e.isFoodprepairing as bool)
+                            ? VacantTables(
+                                tableId: e.id ?? '',
+                                type: 'Fast Food',
+                                image: 'assets/fastfood.png')
+                            : PerpairingFoodTable(
+                                tittle: "Prepairing",
+                                imageLink:
+                                    'https://assets8.lottiefiles.com/packages/lf20_s5tFhoBEWg.json',
+                                tableId: e.id ?? '',
+                                type: 'Fast Food',
+                              );
+                      }
+                      if (e.isDelivery as bool) {
+                        return !(e.isFoodprepairing as bool)
+                            ? VacantTables(
+                                tableId: e.id ?? '',
+                                type: 'Delivery',
+                                image: 'assets/delivery.png')
+                            : PerpairingFoodTable(
+                                tittle: "Prepairing",
+                                imageLink:
+                                    'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
+                                tableId: e.id ?? '',
+                                type: 'Delivery',
+                              );
+                      }
+                      if (e.isComplimentary as bool) {
+                        return !(e.isFoodprepairing as bool)
+                            ? VacantTables(
+                                tableId: e.id ?? '',
+                                type: 'Complimentary',
+                                image: 'assets/comp.jpg')
+                            : PerpairingFoodTable(
+                                tittle: "Prepairing",
+                                imageLink:
+                                    'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
+                                tableId: e.id ?? '',
+                                type: 'Complimentary',
+                              );
+                      } else {
+                        return Container();
+                      }
+                    }).toList(),
+               
+                  ),
                 ),
               ),
-              const Gap(20)
-            ],
-          ),
-        ),
         floatingActionButton: SpeedDial(
           closedForegroundColor: Colors.black,
           openForegroundColor: Colors.white,
@@ -164,14 +120,17 @@ class _TablesState extends State<Tables> {
               label: 'Add Table',
               onPressed: () {
                 showAnimatedDialog(
-                    barrierDismissible: true,
+                    barrierDismissible: false,
                     context: context,
                     animationType: DialogTransitionType.slideFromBottomFade,
                     builder: (context) {
+                      TextEditingController tableId = TextEditingController();
                       bool isComplimentary = false;
                       bool isNormal = false;
                       bool isFastFood = false;
                       bool isDelivery = false;
+                      bool idAlreadyExists = false;
+
                       return AlertDialog(content:
                           StatefulBuilder(builder: (context, setState) {
                         final String id =
@@ -181,12 +140,13 @@ class _TablesState extends State<Tables> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  'Table no. $id',
-                                  style: Styles.poppins16w400,
-                                ),
+                                // Text(
+                                //   'Table no. $id',
+                                //   style: Styles.poppins16w400,
+                                // ),
+
                                 IconButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -197,6 +157,45 @@ class _TablesState extends State<Tables> {
                                     ))
                               ],
                             ),
+                            DesignedTextField(
+                              controller: tableId,
+                              labelText: 'Enter table id',
+                              onChanged: (p0) {
+                                if (tablesController.tables != null) {
+                                  if (tablesController.ids.contains(p0)) {
+                                    setState(
+                                      () {
+                                        idAlreadyExists = true;
+                                      },
+                                    );
+                                  } else {
+                                    setState(
+                                      () {
+                                        idAlreadyExists = false;
+                                      },
+                                    );
+                                  }
+                                }
+                              },
+                              validate: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    idAlreadyExists) {
+                                  return idAlreadyExists
+                                      ? 'Id Already Exists'
+                                      : 'Cannot be empty';
+                                }
+                                return null;
+                              },
+                            ),
+                            idAlreadyExists
+                                ? Text(
+                                    "Id Already Exists",
+                                    style: Styles.poppins14
+                                        .copyWith(color: Colors.red),
+                                  )
+                                : Container(),
+                            const Gap(5),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -380,12 +379,17 @@ class _TablesState extends State<Tables> {
                             CustomButton(
                               buttonText: "Add",
                               onTap: () {
-                                if (isComplimentary ||
-                                    isDelivery ||
-                                    isNormal ||
-                                    isFastFood) {
-                                  tablesController.addTable(t.Table.fromJson({
-                                    'AutoCode': id,
+                                if ((isComplimentary ||
+                                        isDelivery ||
+                                        isNormal ||
+                                        isFastFood) &&
+                                    tableId.text.isNotEmpty) {
+                                      //tablesController.addTable()
+                                 tablesController.addTable(t.Table.fromJson({
+                                    'AutoCode': tablesController.tables == null
+                                        ? 0
+                                        : tablesController.tables!.length,
+                                    'Id': tableId.text.toString(),
                                     'isOcupied': false,
                                     'isComplimentary': isComplimentary,
                                     'isNormal': isNormal,
@@ -393,6 +397,7 @@ class _TablesState extends State<Tables> {
                                     'isDelivery': isDelivery,
                                     'isFoodprepairing': false,
                                   }));
+                                  // tablesController.addTable();
                                   Navigator.pop(context);
                                 } else {
                                   Get.snackbar("Please select table type",
@@ -415,10 +420,11 @@ class _TablesState extends State<Tables> {
               child: const Icon(Icons.delete),
               foregroundColor: Colors.white,
               backgroundColor: Colors.red,
-              label: 'Remove Table',
+              label: 'Discontinue  Table',
               onPressed: () {
+                // Get.find<StorageController>().clearTableBox();
                 showAnimatedDialog(
-                    barrierDismissible: true,
+                    barrierDismissible: false,
                     context: context,
                     animationType: DialogTransitionType.slideFromBottomFade,
                     builder: (context) {
@@ -547,8 +553,6 @@ class _TablesState extends State<Tables> {
                                         backgroundColor: Colors.red,
                                         colorText: Colors.white);
                                   } else {
-                                    tablesController
-                                        .removeTable(data['AutoCode']);
                                     Get.snackbar(
                                         "Table no. ${data['AutoCode']} removed",
                                         "Table removed successfully",

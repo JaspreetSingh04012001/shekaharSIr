@@ -26,7 +26,7 @@ class ResponsiveHelper {
 
   static bool isTab(context) {
     final size = MediaQuery.of(context).size.width;
-    if (size >= 650) {
+    if (size >= 600) {
       return true;
     } else {
       return false;

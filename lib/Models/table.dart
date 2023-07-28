@@ -11,6 +11,7 @@ class Table {
   String? ASSO_STEW_CODE;
   String? TAG;
   dynamic autoCode;
+  String? id ;
   bool? isOcupied;
   bool? isComplimentary;
   bool? isNormal;
@@ -20,6 +21,7 @@ class Table {
 
   Table.fromJson(Map<String, dynamic> json) {
     autoCode = json['AutoCode'];
+    id = json['Id'];
     isOcupied = json['isOcupied'];
     isComplimentary = json['isComplimentary'];
     isNormal = json['isNormal'];
@@ -29,6 +31,7 @@ class Table {
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
+    json['Id'] = id;
     json['AutoCode'] = autoCode;
     json['isOcupied'] = isOcupied;
     json['isComplimentary'] = isComplimentary;

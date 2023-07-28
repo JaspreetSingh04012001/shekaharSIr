@@ -301,6 +301,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  just_debounce_it:
+    dependency: "direct main"
+    description:
+      name: just_debounce_it
+      sha256: "176959d26441330c78f07c0f88cde697f2032e37e8628c0b74245b0d2dc407ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   lints:
     dependency: transitive
     description:
@@ -349,6 +357,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  number_text_input_formatter:
+    dependency: "direct main"
+    description:
+      name: number_text_input_formatter
+      sha256: "163379ff234ec56f05f957a1606acbe61397bcbd70d5cb2489c370d97b9aa881"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+6"
   octo_image:
     dependency: transitive
     description:
@@ -674,6 +690,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+  throttling:
+    dependency: "direct main"
+    description:
+      name: throttling
+      sha256: "0b328adb283db092373b2835574fbcdf7d0e472d24f0455717c836ef9824def9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   typed_data:
     dependency: transitive
     description:
