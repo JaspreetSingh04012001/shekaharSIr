@@ -1,8 +1,10 @@
 import 'package:admin/views/Cart/cart.dart';
 import 'package:admin/views/Orders/menuForOrder.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../common/app_styles_colors.dart';
+import '../../controllers/cartController.dart';
 
 class TableOrder extends StatefulWidget {
   const TableOrder({Key? key}) : super(key: key);
@@ -12,7 +14,6 @@ class TableOrder extends StatefulWidget {
 }
 
 class _TableOrderState extends State<TableOrder> {
-  
   @override
   void initState() {
     // TODO: implement initState
@@ -22,11 +23,12 @@ class _TableOrderState extends State<TableOrder> {
   @override
   Widget build(BuildContext context) {
     dynamic size = MediaQuery.of(context).size.width;
+
     return Container(
       child: Scaffold(
           appBar: AppBar(
             title: Text(
-              "Place Order for Table Id.",
+              "Place Order for Table Id. ${Get.find<CartController>().selectedTable!.id}",
               style: Styles.poppins18w600,
             ),
           ),

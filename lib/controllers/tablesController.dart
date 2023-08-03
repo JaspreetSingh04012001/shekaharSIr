@@ -1,11 +1,20 @@
 import 'package:admin/Models/table.dart';
+import 'package:admin/controllers/cartController.dart';
 import 'package:admin/controllers/storageController.dart';
 import 'package:get/get.dart';
 
 class TablesController extends GetxController {
   List ids = [];
-
+  Table? selectedTable;
   List<Table>? tables;
+
+  void selectTable(Table index) {
+    selectedTable = index;
+
+    update();
+    Get.find<CartController>().selectTable(index);
+  }
+
   void setTables(List<Table>? tabless) {
     tables = tabless;
     update();

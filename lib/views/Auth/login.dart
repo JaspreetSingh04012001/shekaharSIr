@@ -8,6 +8,7 @@ import 'package:admin/views/OutletManager/managerHome.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 
 import '../../common/app_styles_colors.dart';
@@ -35,6 +36,15 @@ class _LoginState extends State<Login> {
   ];
   Widget textfield = Container();
   bool osbsure = true;
+  @override
+  void initState() {
+  //  final int limit = GetStorage.init().printInfo().;
+
+  // Print the limit to the console.
+  //print(limit);
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,7 +239,6 @@ class _LoginState extends State<Login> {
                       List<dynamic>? data =
                           Get.find<StorageController>().getOutletsFromStorage();
                       if (data != null) {
-                        
                         List<Outlet>? list = [];
                         for (var element in data) {
                           list.add(Outlet.fromJson(element));
@@ -278,27 +287,19 @@ class _LoginState extends State<Login> {
                             'discontinue': false,
                             'KITCHEN': '',
                             'outletStartDate': '',
-                            // 'activeStewards': 
-                            // [
-                            //   {
-                            //     'AutoCode': '0',
-                            //     'Steward_Name': '',
-                            //     'PHONE': '',
-                            //     'ADDRESS': '',
-                            //     'FNAME': '',
-                            //     'ON_ROLL': '',
-                            //     'STEW_TYPE': '',
-                            //     'SELF_SRV': '',
-                            //   }
-                            // ],
                           }),
                         ]);
+                        data = Get.find<StorageController>()
+                            .getOutletsFromStorage();
 
-                        Get.find<OutletsController>().setOutletsList(
-                            Get.find<StorageController>()
-                                .getOutletsFromStorage()!
-                                .map((e) => Outlet.fromJson(e))
-                                .toList());
+                        if (data != null) {
+                          List<Outlet>? list = [];
+                          for (var element in data) {
+                            list.add(Outlet.fromJson(element));
+                          }
+
+                          Get.find<OutletsController>().setOutletsList(list);
+                        }
                       }
 
                       switch (selectedrole) {

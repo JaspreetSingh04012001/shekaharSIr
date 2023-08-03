@@ -4,13 +4,13 @@ class ItemVariation {
   String? rate;
   double? qty;
 
-  ItemVariation.fromjson(Map<String , dynamic> json){
+  ItemVariation.fromjson(Map json){
     variationName = json["variationName"];
     rate = json["rate"];
     qty = json["qty"];
   }
   tojson(){
-    Map<String , dynamic> data ={
+    Map<String , dynamic> data = {
       "variationName" : variationName,
       "rate" : rate,
       "qty" : qty,

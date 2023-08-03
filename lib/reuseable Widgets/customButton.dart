@@ -7,12 +7,18 @@ class CustomButton extends StatelessWidget {
   double? width;
   double? verPad;
   double? horPad;
+  bool shadow;
+  Color? color;
+  Color? textColor;
   AlignmentGeometry? alignment;
   final GestureTapCallback? onTap;
 
   CustomButton(
       {Key? key,
       required this.buttonText,
+      this.textColor,
+      this.color,
+      this.shadow = true,
       this.height,
       this.width,
       this.onTap,
@@ -33,14 +39,16 @@ class CustomButton extends StatelessWidget {
           width: width,
           height: height,
           decoration: BoxDecoration(
-              color: Styles.primaryColor,
-              boxShadow: Styles.myShadow,
+              color: color ?? Styles.primaryColor,
+              boxShadow: shadow ? Styles.myShadow : null,
               borderRadius: Styles.myradius2),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               buttonText,
-              style: Styles.poppins14.copyWith(color: Colors.white),
+              style: Styles.poppins14.copyWith(
+                  color: textColor ?? Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),

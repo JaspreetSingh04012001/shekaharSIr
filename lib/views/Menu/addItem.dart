@@ -9,6 +9,7 @@ import 'package:admin/controllers/outletsController.dart';
 import 'package:admin/controllers/storageController.dart';
 import 'package:admin/reuseable%20Widgets/animated_dialog.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
+import 'package:admin/views/Menu/editItem.dart';
 import 'package:admin/views/OutletManager/addDepartment.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -17,13 +18,20 @@ import 'package:number_text_input_formatter/number_text_input_formatter.dart';
 import 'package:throttling/throttling.dart';
 
 class AddItem extends StatefulWidget {
-  const AddItem({Key? key}) : super(key: key);
+  bool edit;
+  Item? editItem;
+  int? editIndex;
+  AddItem({Key? key, this.edit = false, this.editItem, this.editIndex})
+      : super(key: key);
 
   @override
   _AddItemState createState() => _AddItemState();
 }
 
 class _AddItemState extends State<AddItem> {
+  int? autoNum;
+  String? createdAt;
+  String? modifiedAt;
   String? selectedDepartment;
   List<ItemVariation> Variations = [];
   final List<String> departements = [
@@ -33,11 +41,11 @@ class _AddItemState extends State<AddItem> {
   String? selectedCategory;
   List<String>? catrgories;
   String? selectedType;
-  final List<String> foodTypes = [
-    'Veg',
-    'Non-Veg',
-    'Egg Made',
-  ];
+  // final List<String> foodTypes = [
+  //   'Veg',
+  //   'Non-Veg',
+  //   'Egg Made',
+  // ];
   final deb = Debouncing(duration: const Duration(seconds: 1));
   TextEditingController itemCode = TextEditingController();
 
@@ -101,10 +109,54 @@ class _AddItemState extends State<AddItem> {
 
   @override
   void initState() {
-    catrgories = Get.find<OutletsController>().selelctedOutlet!.categories;
+    if (widget.edit) {
+      autoNum = widget.editItem?.autoNum;
+      createdAt = widget.editItem?.createdAt;
+      itemCode.text = widget.editItem!.autoCode!;
+      name.text = widget.editItem!.itemname.toString();
+      selectedDepartment = widget.editItem!.department;
+      selectedCategory = widget.editItem!.category;
+      selectedType = widget.editItem!.type;
+      rate.text = widget.editItem!.rate.toString();
+      isRateDeciaml = widget.editItem!.isRateDeciaml ?? false;
+      if (widget.editItem?.sellUom != null) {
+        isUnit = true;
+        unit.text = widget.editItem!.sellUom.toString();
+      }
 
-    // TODO: implement initState
-    super.initState();
+      isDiscountAble = widget.editItem!.discountable ?? false;
+      if (widget.editItem?.discount != null) {
+        discount.text = widget.editItem!.discount.toString();
+      }
+
+      isFinishedGood = widget.editItem!.isFinishedGood ?? false;
+
+      if (widget.editItem!.isFinishedGood ?? false) {
+        qtx.text = widget.editItem!.qty.toString();
+      }
+      if (widget.editItem?.inclusive != null) {
+        if (widget.editItem?.tax != null) {
+          isTaxGst = true;
+          taxGst.text = widget.editItem!.tax.toString();
+        }
+        if (widget.editItem?.cess != null) {
+          cess.text = widget.editItem!.cess.toString();
+        }
+        isInclusive = widget.editItem!.inclusive ?? false;
+      }
+      if (widget.editItem?.altName != null) {
+        isAltName = true;
+        altName.text = widget.editItem!.altName.toString();
+      }
+      if (widget.editItem?.variations != null) {
+        Variations = widget.editItem!.variations!;
+      }
+      // Get.find<InventoryController>();
+      // catrgories = Get.find<OutletsController>().selelctedOutlet!.categories;
+
+      // TODO: implement initState
+      super.initState();
+    }
   }
 
   // final _menuItem = MenuItem(name: '', description: '', price: 0.0);
@@ -120,18 +172,16 @@ class _AddItemState extends State<AddItem> {
             color: Colors.black,
           ),
           onPressed: () {
-            Get.back();
+            Get.off(const EditItem());
           },
         ),
         title: Text(
-          "Add Item in Menu",
+          widget.edit ? "Edit Item" : "Add Item in Menu",
           style: Styles.poppins18w600,
         ),
       ),
-      body: GetBuilder<InventoryController>(initState: (state) {
-        // Get.find<InventoryController>().updateItemsList();
-      }, builder: (inventoryController) {
-        print(inventoryController.autoCodes);
+      body: GetBuilder<InventoryController>(builder: (inventoryController) {
+        // print(inventoryController.autoCodes);
         Widget form = SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -143,7 +193,8 @@ class _AddItemState extends State<AddItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (inventoryController.autoCodes != null)
+                      if (inventoryController.autoCodes.isNotEmpty &&
+                          !widget.edit)
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -159,6 +210,7 @@ class _AddItemState extends State<AddItem> {
                               // mainAxisAlignment: MainAxisAlignment.,
                               children: [
                                 DesignedTextField(
+                                  enabled: !widget.edit,
                                   onChanged: (p0) {
                                     deb.debounce(() {
                                       inventoryController.updateItemsList();
@@ -185,24 +237,29 @@ class _AddItemState extends State<AddItem> {
                                   controller: itemCode,
                                   labelText: 'Item id',
                                   validate: (value) {
-                                    if (value!.isEmpty ||
-                                        inventoryController.autoCodes
-                                            .contains(value)) {
-                                      setState(() {
-                                        idAlreadyExists = false;
-                                      });
-                                      return 'Please enter different Item id';
+                                    if (widget.edit == true) {
+                                      return null;
+                                    } else {
+                                      if (value!.isEmpty ||
+                                          inventoryController.autoCodes
+                                              .contains(value)) {
+                                        setState(() {
+                                          idAlreadyExists = false;
+                                        });
+                                        return 'Please enter different Item id';
+                                      }
+                                      return null;
                                     }
-                                    return null;
                                   },
                                 ),
-                                idAlreadyExists
-                                    ? Text(
-                                        "Id Already Exists",
-                                        style: Styles.poppins14
-                                            .copyWith(color: Colors.red),
-                                      )
-                                    : Container()
+                                if (!widget.edit)
+                                  idAlreadyExists
+                                      ? Text(
+                                          "Id Already Exists",
+                                          style: Styles.poppins14
+                                              .copyWith(color: Colors.red),
+                                        )
+                                      : Container()
                               ],
                             ),
                           ),
@@ -252,37 +309,41 @@ class _AddItemState extends State<AddItem> {
                             flex: 1,
                             child: Column(
                               children: [
-                                MyDropdown(
-                                  y: y,
-                                  list: catrgories != null
-                                      ? [
-                                          ...?Get.find<OutletsController>()
-                                              .selelctedOutlet!
-                                              .categories,
-                                          '+ Add Category'
-                                        ]
-                                      : ['+ Add Category'],
-                                  selectedValue: selectedCategory,
-                                  onChanged: (value) {
-                                    //print(value);
-                                    if (value == '+ Add Category') {
-                                      showAnimatedDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              content: AddDepartment(
-                                                department: false,
-                                              ),
-                                            );
-                                          });
-                                    } else {
-                                      setState(() {
-                                        selectedCategory = value;
-                                      });
-                                    }
-                                  },
-                                  labelText: 'Select Category',
-                                ),
+                                GetBuilder<OutletsController>(
+                                    builder: (outletsController) {
+                                  return MyDropdown(
+                                    y: y,
+                                    list: outletsController
+                                                .selelctedOutlet?.categories !=
+                                            null
+                                        ? [
+                                            ...?outletsController
+                                                .selelctedOutlet?.categories,
+                                            '+ Add Category'
+                                          ]
+                                        : ['+ Add Category'],
+                                    selectedValue: selectedCategory,
+                                    onChanged: (value) {
+                                      //print(value);
+                                      if (value == '+ Add Category') {
+                                        showAnimatedDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                content: AddDepartment(
+                                                  department: false,
+                                                ),
+                                              );
+                                            });
+                                      } else {
+                                        setState(() {
+                                          selectedCategory = value;
+                                        });
+                                      }
+                                    },
+                                    labelText: 'Select Category',
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -321,6 +382,13 @@ class _AddItemState extends State<AddItem> {
                               keyboardType: TextInputType.number,
                               labelText: 'Rate',
                               controller: rate,
+                              onChanged: (p0) {
+                                if (p0.contains(".")) {
+                                  setState(() {
+                                    isRateDeciaml = true;
+                                  });
+                                }
+                              },
                               validate: (value) {
                                 if (value!.isEmpty) {
                                   return 'Please enter the price';
@@ -366,6 +434,15 @@ class _AddItemState extends State<AddItem> {
                                     onChanged: (v) {
                                       setState(() {
                                         isRateDeciaml = !isRateDeciaml;
+                                        if (isRateDeciaml == false) {
+                                          if (rate.text.contains(".")) {
+                                            String str = rate.text;
+
+//split string
+                                            var arr = str.split('.');
+                                            rate.text = arr[0];
+                                          }
+                                        }
                                       });
                                     }),
                                 // const Gap(5),
@@ -916,9 +993,13 @@ class _AddItemState extends State<AddItem> {
                                               ),
                                               style: const TextStyle(
                                                   fontSize: 16.0),
-                                              // onChanged: (v){
-
-                                              // },
+                                              onChanged: (v) {
+                                                if (v.contains(".")) {
+                                                  setState(() {
+                                                    isRateDeciaml = true;
+                                                  });
+                                                }
+                                              },
                                               validator: (value) {
                                                 if (value!.isEmpty) {
                                                   return 'Please enter price';
@@ -1066,46 +1147,100 @@ class _AddItemState extends State<AddItem> {
                                 );
                               });
                             } else {
-                              Get.find<StorageController>()
-                                  .addNewItemInventory(Item.fromjson({
-                                "autoNum":
-                                    inventoryController.assignNewAutoNum(),
-                                "autoCode": itemCode.text.trim(),
-                                "shortName": itemCode.text.toString(),
-                                "itemname": name.text,
-                                "rate": rate.text,
-                                "department": selectedDepartment,
-                                "tax": taxGst.text,
-                                "inclusiveOrExclusive": taxGst.text.isNotEmpty
-                                    ? isInclusive
-                                        ? isInclusive
-                                        : !isInclusive
-                                    : null,
-                                if (isTaxGst) "cess": cess.text,
-                                "discountable": isDiscountAble,
-                                "discount": discount.text,
-                                "discontinued": false,
-                                "isFinishedGood": isFinishedGood,
-                                "qty": isFinishedGood ? qtx.text : 0,
-                                "sellUom": unit.text,
-                                "altName": altName.text,
-                                "category": selectedCategory,
-                                "type": selectedType,
-                                "isRateDeciaml": isRateDeciaml,
-                                if (Variations.isNotEmpty)
-                                  "variations":
-                                      Variations.map((e) => e.tojson()).toList()
-                              }));
+                              if (widget.edit) {
+                                var date = DateTime.now().toString();
+                                Item yo = Item.fromjson({
+                                  "modifiedAt": date,
+                                  "createdAt": widget.editItem?.createdAt,
+                                  "autoNum": widget.editItem?.autoNum,
+                                  "autoCode": widget.editItem?.autoCode,
+                                  "shortName": itemCode.text,
+                                  "itemname": name.text,
+                                  "rate": rate.text,
+                                  "department": selectedDepartment,
+                                  if (taxGst.text.isNotEmpty && isTaxGst)
+                                    "tax": taxGst.text,
+                                  "inclusive": taxGst.text.isNotEmpty
+                                      ? isInclusive
+                                          ? isInclusive
+                                          : !isInclusive
+                                      : null,
+                                  if (isTaxGst) "cess": cess.text,
+                                  "discountable": isDiscountAble,
+                                  if (discount.text.isNotEmpty &&
+                                      isDiscountAble)
+                                    "discount": discount.text,
+                                  "discontinued": false,
+                                  "isFinishedGood": isFinishedGood,
+                                  "qty": isFinishedGood ? qtx.text : 0,
+                                  if (unit.text.isNotEmpty && isUnit)
+                                    "sellUom": unit.text,
+                                  if (altName.text.isNotEmpty && isAltName)
+                                    "altName": altName.text,
+                                  "category": selectedCategory,
+                                  "type": selectedType,
+                                  "isRateDeciaml": isRateDeciaml,
+                                  if (Variations.isNotEmpty)
+                                    "variations":
+                                        Variations.map((e) => e.tojson())
+                                            .toList()
+                                });
+                                Get.find<StorageController>()
+                                    .replaceitemInventory(
+                                        yo, widget.editIndex ?? 0);
+
+                                Get.off(const EditItem());
+                              } else {
+                                var date = DateTime.now().toString();
+                                Item yo1 = Item.fromjson({
+                                  "createdAt": date,
+                                  "autoNum":
+                                      inventoryController.assignNewAutoNum(),
+                                  "autoCode": itemCode.text.trim(),
+                                  "shortName": itemCode.text,
+                                  "itemname": name.text,
+                                  "rate": rate.text,
+                                  "department": selectedDepartment,
+                                  if (taxGst.text.isNotEmpty)
+                                    "tax": taxGst.text,
+                                  "inclusive": taxGst.text.isNotEmpty
+                                      ? isInclusive
+                                          ? isInclusive
+                                          : !isInclusive
+                                      : null,
+                                  if (isTaxGst) "cess": cess.text,
+                                  "discountable": isDiscountAble,
+                                  if (discount.text.isNotEmpty)
+                                    "discount": discount.text,
+                                  "discontinued": false,
+                                  "isFinishedGood": isFinishedGood,
+                                  "qty": isFinishedGood ? qtx.text : 0,
+                                  if (unit.text.isNotEmpty)
+                                    "sellUom": unit.text,
+                                  if (altName.text.isNotEmpty)
+                                    "altName": altName.text,
+                                  "category": selectedCategory,
+                                  "type": selectedType,
+                                  "isRateDeciaml": isRateDeciaml,
+                                  if (Variations.isNotEmpty)
+                                    "variations":
+                                        Variations.map((e) => e.tojson())
+                                            .toList()
+                                });
+                                Get.find<StorageController>()
+                                    .addNewItemInventory(yo1);
+
+                                Future.delayed(const Duration(seconds: 1))
+                                    .whenComplete(() {
+                                  reset();
+                                });
+                              }
                             }
-                            Future.delayed(const Duration(seconds: 1))
-                                .whenComplete(() {
-                              reset();
-                            });
                           }
                         },
                         style: Styles.mybuttonStyle,
                         child: Text(
-                          'Add Item',
+                          widget.edit ? 'update item' : 'Add Item',
                           style: Styles.poppins16w500
                               .copyWith(color: Colors.white),
                         ),
@@ -1114,8 +1249,6 @@ class _AddItemState extends State<AddItem> {
                   ),
                 ),
               ),
-
-           
             ],
           ),
         );

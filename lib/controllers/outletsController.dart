@@ -1,5 +1,7 @@
 import 'package:admin/Models/outlet.dart';
 import 'package:admin/Models/steward.dart';
+import 'package:admin/controllers/OrdersController.dart';
+import 'package:admin/controllers/cartController.dart';
 import 'package:admin/controllers/inventoryController.dart';
 import 'package:admin/controllers/storageController.dart';
 import 'package:admin/controllers/tablesController.dart';
@@ -132,6 +134,9 @@ class OutletsController extends GetxController {
     update();
     Get.find<TablesController>().updateTables();
     Get.find<InventoryController>().updateItemsList();
+    Get.find<CartController>();
+    //  Get.find<StorageController>().clearorders();
+    Get.find<OrdersController>().getorders();
   }
 
   void setselelctedtittle(String name) {

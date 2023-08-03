@@ -9,7 +9,7 @@ class InventoryController extends GetxController {
 
   removeItem(int index) {
     items!.removeAt(index);
-Get.find<StorageController>().updateItemsInStorage(items ?? []);
+    Get.find<StorageController>().updateItemsInStorage(items ?? []);
     //update();
   }
 
@@ -21,10 +21,11 @@ Get.find<StorageController>().updateItemsInStorage(items ?? []);
         if (!autoCodes.contains(element.autoCode)) {
           autoCodes.add(element.autoCode);
         }
-       
 
-       // autoCodes.add(element.autoNum);
+        // autoCodes.add(element.autoNum);
       }
+    } else {
+      // autoCodes.add("0");
     }
     update();
   }

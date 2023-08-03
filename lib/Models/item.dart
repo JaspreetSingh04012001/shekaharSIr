@@ -1,11 +1,10 @@
 import 'itemsVariation.dart';
 
 class Item {
-  
-
   int? autoNum;
   String? autoCode;
   String? createdAt;
+  String? modifiedAt;
   String? shortName;
   String? itemname;
   String? department;
@@ -14,7 +13,7 @@ class Item {
   String? rate;
   String? tax;
   String? cess;
-  bool? inclusiveOrExclusive;
+  bool? inclusive;
   bool? discountable;
   String? discount;
   bool? discontinued;
@@ -24,24 +23,28 @@ class Item {
   String? altName;
   bool? isRateDeciaml;
   List<ItemVariation>? variations;
-  Item.fromjson(Map<String, dynamic> json) {
+  Item.fromjson(Map json) {
     autoNum = json["autoNum"];
-    autoCode = json["autoCode"].toString();
-    createdAt = json["createdAt"].toString();
-    shortName = json["shortName"].toString();
-    itemname = json["itemname"].toString();
-    rate = json["rate"].toString();
+    autoCode = json["autoCode"];
+    createdAt = json["createdAt"];
+    modifiedAt = json["modifiedAt"];
+    shortName = json["shortName"];
+    itemname = json["itemname"];
+    rate = json["rate"];
     department = json["department"];
-    tax = json["tax"].toString();
-    cess = json["cess"].toString();
-    inclusiveOrExclusive = json["inclusiveOrExclusive"];
+    tax = json["tax"];
+    cess = json["cess"];
+    inclusive = json["inclusive"];
     discountable = json["discountable"];
-    discount = json["discount"].toString();
+    discount = json["discount"];
     discontinued = json["discontinued"];
     isFinishedGood = json["isFinishedGood"];
-    qty = json["qty"].toString();
-    sellUom = json["sellUom"].toString();
-    altName = json["altName"].toString();
+    if (json["isFinishedGood"]) {
+      qty = json["qty"].toString();
+    }
+
+    sellUom = json["sellUom"];
+    altName = json["altName"];
     category = json["category"];
     type = json["type"];
     isRateDeciaml = json["isRateDeciaml"];
@@ -54,6 +57,8 @@ class Item {
   }
   tojson() {
     Map<String, dynamic> data = {
+      "createdAt": createdAt,
+      "modifiedAt": modifiedAt,
       "autoNum": autoNum,
       "autoCode": autoCode,
       "shortName": shortName,
@@ -61,8 +66,8 @@ class Item {
       "rate": rate,
       "department": department,
       "tax": tax,
-      "cess" : cess,
-      "inclusiveOrExclusive": inclusiveOrExclusive,
+      "cess": cess,
+      "inclusive": inclusive,
       "discountable": discountable,
       "discount": discount,
       "discontinued": discontinued,

@@ -9,11 +9,12 @@ class DesignedTextField extends StatelessWidget {
   TextInputType? keyboardType;
   String? labelText;
   String? Function(String?)? validate;
+  bool? enabled;
   List<TextInputFormatter>? inputFormatters;
   DesignedTextField(
       {Key? key,
       this.labelText,
-      this.controller,
+      this.controller,this.enabled,
       this.validate,this.onChanged,
       this.keyboardType,this.inputFormatters})
       : super(key: key);
@@ -21,6 +22,7 @@ class DesignedTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       controller: controller,
       inputFormatters: inputFormatters,
       onChanged: onChanged,

@@ -1,8 +1,17 @@
+import 'package:admin/Models/item.dart';
 import 'package:admin/common/app_styles_colors.dart';
+import 'package:admin/common/reusable%20widgets/myDropdown.dart';
+import 'package:admin/controllers/outletsController.dart';
+import 'package:admin/reuseable%20Widgets/customButton.dart';
+import 'package:admin/views/Menu/addItem.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
-import '../../Services/Storage/outletMenu.dart';
+import '../../controllers/cartController.dart';
+import '../../controllers/inventoryController.dart';
+import '../../reuseable Widgets/animated_dialog.dart';
+import '../OutletManager/addDepartment.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({Key? key}) : super(key: key);
@@ -12,638 +21,425 @@ class EditItem extends StatefulWidget {
 }
 
 class _EditItemState extends State<EditItem> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  List _items = [];
-  List _filteredItems = [];
-  final obj = Stroge();
-  menuFromStorage() async {
-    var data = obj.box.read("OutletID");
-    if (data is List) {
-      setState(() {
-        // _items = [...data];
-        _items = data.toSet().toList();
+  String? selectedCategory;
+  String? filterKey = '';
+  String? selectedType;
+  final List<String> foodTypes = [
+    'Veg',
+    'Non-Veg',
+    'Egg Made',
+  ];
+  String? selectedDepartment;
+  final List<String> departements = [
+    'kitchen',
+    'Bar',
+  ];
 
-        _filteredItems.addAll(_items);
-      });
-    }
-    // obj.box.listenKey("OutletID", (value) {
-    //   // print(value);
-    //   if (value is List) {
-    //     setState(() {
-    //       _items = [...value];
-    //       _filteredItems.addAll(_items);
-    //     });
-    //   }
-    // });
-  }
+  List<Item>? items;
+  void filter() async {
+    items = Get.find<InventoryController>().items?.where(
+      (element) {
+        if ((element.itemname!.contains(filterKey ?? '') ||
+            element.shortName!.contains(filterKey ?? ''))) {
+          if (selectedType != null ||
+              selectedCategory != null ||
+              selectedDepartment != null) {
+            if (selectedType != null &&
+                selectedCategory != null &&
+                selectedDepartment != null) {
+              return element.type == selectedType &&
+                  element.category == selectedCategory &&
+                  element.department == selectedDepartment;
+            } else {
+              if (selectedType != null &&
+                  selectedCategory == null &&
+                  selectedDepartment == null) {
+                return element.type == selectedType;
+              }
+              if (selectedType == null &&
+                  selectedCategory != null &&
+                  selectedDepartment == null) {
+                return element.category == selectedCategory;
+              }
+              if (selectedType == null &&
+                  selectedCategory == null &&
+                  selectedDepartment != null) {
+                return element.department == selectedDepartment;
+              }
 
-  @override
-  void dispose() {
-    _filteredItems;
-    _items;
-    // TODO: implement dispose
-    super.dispose();
+              if (selectedType != null &&
+                  selectedCategory != null &&
+                  selectedDepartment == null) {
+                return element.type == selectedType &&
+                    element.category == selectedCategory;
+              }
+              if (selectedType != null &&
+                  selectedCategory == null &&
+                  selectedDepartment != null) {
+                return element.type == selectedType &&
+                    element.department == selectedDepartment;
+              }
+
+              if (selectedType == null &&
+                  selectedCategory != null &&
+                  selectedDepartment != null) {
+                return element.category == selectedCategory &&
+                    element.department == selectedDepartment;
+              } else {
+                return false;
+              }
+            }
+          } else {
+            return true;
+          }
+        } else {
+          return false;
+        }
+      },
+    ).toList();
+    /*String? department;
+  String? category;
+  String? type; */
+    setState(() {});
   }
 
   @override
   void initState() {
-    menuFromStorage();
-
+    items = Get.find<InventoryController>().items;
+    filter();
+    // TODO: implement initState
     super.initState();
-  }
-
-  void _filterItems(String query) {
-    setState(() {
-      _filteredItems = _items.where((item) {
-        if (item["SName"].toString().contains(query) ||
-            item["item"].toLowerCase().contains(query.toLowerCase())) {
-          return true;
-        } else {
-          return false;
-        }
-      }).toList();
-    });
-  }
-
-  // void _addItem() {
-  //   final newIndex = _items.length;
-  //   //_items.add('Item ${newIndex + 1}');
-  //   _filteredItems.add(_items[newIndex]);
-  //   _listKey.currentState?.insertItem(newIndex);
-  // }
-
-  void _removeItem(int index) {
-    _listKey.currentState?.removeItem(index, (context, animation) {
-      if (index < _filteredItems.length) {
-        return _buildListItem(context, _filteredItems[index], animation);
-      } else {
-        return Container();
-      }
-    }
-        // _buildListItem(context, _filteredItems[index], animation),
-        );
-    _filteredItems.removeAt(index);
-    _items.removeAt(index);
-    Stroge().box.write("OutletID", _items);
-  }
-
-  Widget _buildListItem(
-      BuildContext context, var item, Animation<double> animation) {
-    double width = MediaQuery.of(context).size.width;
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(-1, 0),
-        end: Offset.zero,
-      ).animate(animation),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: Styles.myradius),
-            child: Row(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: width * 0.1,
-                  child: Text(
-                    "${item["SName"]}.",
-                    style: Styles.poppins14,
-                  ),
-                ),
-                Container(
-                  //color: Colors.amber,
-                  alignment: Alignment.center,
-                  width: width * 0.45,
-                  child: Text(
-                    "${item["item"]}",
-                    style: Styles.poppins14,
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: width * 0.15,
-                  child: Text(
-                    "${item["RATE"]}",
-                    style: Styles.poppins14,
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: width * 0.2,
-                  child: Text(
-                    "${item["Qtx"]}",
-                    style: Styles.poppins14,
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: width * 0.1,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Styles.primaryColor,
-                    ),
-                    onPressed: () {
-                      dynamic tempindex;
-
-                      for (var element in _items) {
-                        if (element["SName"] == item["SName"]) {
-                          tempindex = _items.indexOf(element);
-                        }
-                      }
-                      TextEditingController name = TextEditingController();
-
-                      TextEditingController rate = TextEditingController();
-                      TextEditingController qtx = TextEditingController();
-                      TextEditingController fg = TextEditingController();
-
-                      name.text = item["item"];
-                      rate.text = item["RATE"].toString();
-                      qtx.text = item["Qtx"].toString();
-                      fg.text = item["FG"];
-                      final formKey = GlobalKey<FormState>();
-                      // List items = [];
-
-                      List<String> types = ["Veg", "Non-Veg", "Egg-Made"];
-                      int? indexSelected = types.indexOf(item["type"]);
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(content: StatefulBuilder(builder:
-                                (BuildContext context, StateSetter setStatee) {
-                              return Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: SingleChildScrollView(
-                                    child: Form(
-                                      key: formKey,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          const SizedBox(height: 16.0),
-                                          TextFormField(
-                                            controller: name,
-                                            decoration: InputDecoration(
-                                              labelText: 'Item name',
-                                              errorStyle: Styles.poppins16w400
-                                                  .copyWith(color: Colors.red),
-                                              labelStyle: Styles.poppins16w400,
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                            ),
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter Item Name';
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (value) {
-                                              // _menuItem.description = value!;
-                                            },
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          TextFormField(
-                                            controller: rate,
-                                            decoration: InputDecoration(
-                                              labelText: 'Rate',
-                                              errorStyle: Styles.poppins16w400
-                                                  .copyWith(color: Colors.red),
-                                              labelStyle: Styles.poppins16w400,
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                            ),
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                            keyboardType: TextInputType.number,
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter the price';
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (value) {
-                                              //  _menuItem.price = double.parse(value!);
-                                            },
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          TextFormField(
-                                            // keyboardType: TextInputType.numberWithOptions(signed: true),
-                                            //   inputFormatters: [
-                                            //     FilteringTextInputFormatter.allow(
-                                            //         RegExp(r'^-?\d*\.?\d*$')),
-                                            //     TextInputFormatter.withFunction((oldValue, newValue) {
-                                            //       // Allow '-' symbol only at the beginning
-                                            //       if (newValue.text == '-' && oldValue.text != '-') {
-                                            //         return newValue.copyWith(text: '');
-                                            //       }
-                                            //       return newValue;
-                                            //     }),
-                                            //   ],
-
-                                            controller: qtx,
-                                            decoration: InputDecoration(
-                                              labelText: 'Qtx',
-                                              errorStyle: Styles.poppins16w400
-                                                  .copyWith(color: Colors.red),
-                                              labelStyle: Styles.poppins16w400,
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                            ),
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                            //  keyboardType: TextInputType.number,
-                                            // validator: (value) {
-                                            //   if (value!.isEmpty) {
-                                            //     return 'Please enter the Quantity';
-                                            //   }
-                                            //   return null;
-                                            // },
-                                            onSaved: (value) {
-                                              //  _menuItem.price = double.parse(value!);
-                                            },
-                                          ),
-                                          const SizedBox(height: 16.0),
-                                          TextFormField(
-                                            controller: fg,
-                                            //  controller: TextEditingController,
-                                            //initialValue: "F",
-                                            decoration: InputDecoration(
-                                              labelText: 'FG',
-                                              errorStyle: Styles.poppins16w400
-                                                  .copyWith(color: Colors.red),
-                                              labelStyle: Styles.poppins16w400,
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                            ),
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                            // keyboardType: TextInputType.number,
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'I dont\' know';
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (value) {
-                                              //  _menuItem.price = double.parse(value!);
-                                            },
-                                          ),
-                                          const Gap(25),
-                                          Text(
-                                            "Please select type of item.",
-                                            style: Styles.poppins16w400,
-                                          ),
-                                          const Gap(10),
-                                          Wrap(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  setStatee(() {
-                                                    indexSelected = 0;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  // width: 100,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          Styles.myradius,
-                                                      boxShadow:
-                                                          Styles.myShadow,
-                                                      color: indexSelected == 0
-                                                          ? Colors.green
-                                                          : Colors.white),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: Text(
-                                                      types[0],
-                                                      style: Styles
-                                                          .poppins16w400
-                                                          .copyWith(
-                                                        color:
-                                                            indexSelected != 0
-                                                                ? Colors.black
-                                                                : Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const Gap(10),
-                                              InkWell(
-                                                onTap: () {
-                                                  setStatee(() {
-                                                    indexSelected = 1;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  // width: 100,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          Styles.myradius,
-                                                      boxShadow:
-                                                          Styles.myShadow,
-                                                      color: indexSelected == 1
-                                                          ? Colors.red
-                                                          : Colors.white),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: Text(
-                                                      types[1],
-                                                      style: Styles
-                                                          .poppins16w400
-                                                          .copyWith(
-                                                        color:
-                                                            indexSelected != 1
-                                                                ? Colors.black
-                                                                : Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const Gap(10),
-                                              InkWell(
-                                                onTap: () {
-                                                  setStatee(() {
-                                                    indexSelected = 2;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  // width: 100,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          Styles.myradius,
-                                                      boxShadow:
-                                                          Styles.myShadow,
-                                                      color: indexSelected == 2
-                                                          ? Colors.yellow
-                                                          : Colors.white),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: Text(
-                                                      types[2],
-                                                      style: Styles
-                                                          .poppins16w400
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Gap(25),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              if (formKey.currentState!
-                                                  .validate()) {
-                                                formKey.currentState!.save();
-                                                print(
-                                                    "$indexSelected  ${name.text} ${rate.text} ${qtx.text} ${fg.text}");
-
-                                                // Stroge().addItemMenu(item: {
-                                                //   "SName": int.parse(serialNumberController.text),
-                                                //   "item": name.text,
-                                                //   "RATE": int.parse(rate.text),
-                                                //   "Qtx": qtx.text.isEmpty ? 0 : int.parse(qtx.text),
-                                                //   "FG": fg.text,
-                                                //   "type": indexSelected == null
-                                                //       ? ""
-                                                //       : types[indexSelected ?? 0]
-                                                // });
-                                                /*    tempItems.add({
-                              "SName": int.parse(serialNumberController.text),
-                              "item": name.text,
-                              "RATE": int.parse(rate.text),
-                              "Qtx": qtx.text.isEmpty ? 0 : int.parse(qtx.text),
-                              "FG": fg.text,
-                              "type": indexSelected == null
-                                  ? ""
-                                  : types[indexSelected ?? 0]
-                            }); */
-                                                setState(() {
-                                                  item["item"] = name.text;
-                                                  item["RATE"] = rate.text;
-                                                  item["Qtx"] = qtx.text;
-                                                  item["FG"] = fg.text;
-                                                  _items[tempindex]["item"] =
-                                                      name.text;
-                                                  _items[tempindex]["RATE"] =
-                                                      int.parse(rate.text);
-                                                  _items[tempindex]["Qtx"] =
-                                                      qtx.text.isEmpty
-                                                          ? 0
-                                                          : int.parse(qtx.text);
-                                                  _items[tempindex]["FG"] =
-                                                      fg.text;
-                                                  _items[tempindex]["type"] =
-                                                      indexSelected == null
-                                                          ? ""
-                                                          : types[
-                                                              indexSelected ??
-                                                                  0];
-                                                });
-
-                                                Stroge()
-                                                    .box
-                                                    .write("OutletID", _items);
-
-                                                name.clear();
-                                                rate.clear();
-                                                qtx.clear();
-
-                                                Navigator.of(context).pop();
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  Styles.primaryColor,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 16.0),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              'Update Item',
-                                              style: Styles.poppins16w500
-                                                  .copyWith(
-                                                      color: Colors.white),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }));
-                          });
-                      // setState(() {
-                      //   item["RATE"] = 500;
-                      // });
-                    },
-                  ),
-                ),
-              ],
-            )),
-      ),
-
-      //  ListTile(
-      //   title: Text(
-      //     "${item["SName"]}. ${item["item"]}",
-      //     style: Styles.poppins14,
-      //   ),
-      //   trailing: IconButton(
-      //     icon: const Icon(
-      //       Icons.delete,
-      //       color: Colors.red,
-      //     ),
-      //     onPressed: () => _removeItem(_filteredItems.indexOf(item)),
-      //   ),
-      // ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Edit Item in Menu",
-          style: Styles.poppins18w600,
-        ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: _filterItems,
-              decoration: InputDecoration(
-                //errorBorder: const InputBorder(),
+    final double width = MediaQuery.sizeOf(context).width;
 
-                errorStyle: Styles.poppins16w400.copyWith(color: Colors.red),
-                labelText: 'Search',
-                labelStyle: Styles.poppins16w400,
-                filled: true,
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+    return Scaffold(
+      body: GetBuilder<CartController>(builder: (cartController) {
+        return Column(
+          children: [
+            const Gap(50),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  filterKey = value;
+                  filter();
+                },
+                // onChanged: _filterItems,
+                decoration: InputDecoration(
+                  //errorBorder: const InputBorder(),
+
+                  errorStyle: Styles.poppins16w400.copyWith(color: Colors.red),
+                  labelText: 'Search',
+                  labelStyle: Styles.poppins16w400,
+                  filled: true,
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.black,
+                  ),
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),
-          ),
-          const Gap(10),
-          Row(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: width * 0.1,
-                child: Text(
-                  "Sno.",
-                  style:
-                      Styles.poppins16w400.copyWith(color: Styles.primaryColor),
-                ),
-              ),
-              Container(
-                //color: Colors.amber,
-                alignment: Alignment.center,
-                width: width * 0.45,
-                child: Text(
-                  "Item",
-                  style:
-                      Styles.poppins16w400.copyWith(color: Styles.primaryColor),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: width * 0.15,
-                child: Text(
-                  "Rate",
-                  style:
-                      Styles.poppins16w400.copyWith(color: Styles.primaryColor),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: width * 0.2,
-                child: Text(
-                  "Qtx",
-                  style:
-                      Styles.poppins16w400.copyWith(color: Styles.primaryColor),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: width * 0.1,
-              ),
-            ],
-          ),
-          const Gap(10),
-          Expanded(
-            child: _filteredItems.isEmpty
-                ? Center(
-                    child: Text(
-                    "No Items Found",
-                    style: Styles.poppins14,
-                  ))
-                : AnimatedList(
-                    key: _listKey,
-                    initialItemCount: _filteredItems.length,
-                    itemBuilder: (context, index, animation) {
-                      if (index < _filteredItems.length) {
-                        return _buildListItem(
-                            context, _filteredItems[index], animation);
-                      } else {
-                        return Container();
-                      }
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: MyDropdown(
+                    list: foodTypes,
+                    selectedValue: selectedType,
+                    onChanged: (value) {
+                      //print(value);
+                      setState(() {
+                        selectedType = value;
+                      });
+                      filter();
                     },
+                    labelText: 'Select Type',
                   ),
-          ),
-        ],
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _addItem,
-      //   child: const Icon(Icons.add),
-      // ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: MyDropdown(
+                    list: departements,
+                    selectedValue: selectedDepartment,
+                    onChanged: (value) {
+                      //print(value);
+                      setState(() {
+                        selectedDepartment = value;
+                      });
+                      filter();
+                    },
+                    labelText: 'Select Department',
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: GetBuilder<OutletsController>(
+                      builder: (outletsController) {
+                    return MyDropdown(
+                      list: outletsController.selelctedOutlet?.categories !=
+                              null
+                          ? [
+                              ...?outletsController.selelctedOutlet?.categories,
+                              '+ Add Category'
+                            ]
+                          : ['+ Add Category'],
+                      selectedValue: selectedCategory,
+                      onChanged: (value) {
+                        //print(value);
+                        if (value == '+ Add Category') {
+                          showAnimatedDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: AddDepartment(
+                                    department: false,
+                                  ),
+                                );
+                              });
+                        } else {
+                          setState(() {
+                            selectedCategory = value;
+                          });
+                          filter();
+                        }
+                      },
+                      labelText: 'Select Category',
+                    );
+                  }),
+                ),
+                IconButton(
+                  tooltip: "Reset",
+                  icon: const Icon(Icons.restart_alt_outlined),
+                  color: Styles.primaryColor,
+                  onPressed: () {
+                    selectedCategory = null;
+                    selectedDepartment = null;
+                    selectedType = null;
+                    filter();
+                  },
+                )
+              ],
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Id",
+                      style: Styles.poppins16w400,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    //color: Colors.amber,
+                    alignment: Alignment.center,
+
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "item",
+                        style: Styles.poppins16w400,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Price",
+                      style: Styles.poppins16w400,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            Expanded(
+              child: items == null
+                  ? Center(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "No items Added",
+                              style: Styles.poppins14,
+                            ),
+                            CustomButton(
+                              onTap: () {
+                                Get.to(AddItem());
+                              },
+                              buttonText: " Add Item ",
+                              alignment: null,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: items?.length ?? 0,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        Color color = Colors.white;
+                        Color textColor = Colors.black;
+                        return InkWell(
+                          onTap: () {
+                            Get.off(
+
+                              AddItem(
+                                editItem: items![index],
+                                edit: true,
+                                editIndex: Get.find<InventoryController>()
+                                    .items
+                                    ?.indexOf(items![index]),
+                              ),
+                            );
+                            // showDialog(
+                            //     barrierDismissible: false,
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         shape: BeveledRectangleBorder(
+                            //             borderRadius: Styles.myradius2),
+                            //         content:
+                            //             ItemAlertDailog(item: items![index]),
+                            //       );
+                            //     });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 1),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: color,
+                                  borderRadius: Styles.myradius2,
+                                  boxShadow: Styles.myShadow),
+                              width: width,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "${items![index].autoCode}",
+                                              style: Styles.poppins14
+                                                  .copyWith(color: textColor),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: width * 0.45,
+                                            child: Text(
+                                              "${items![index].itemname}",
+                                              style: Styles.poppins14
+                                                  .copyWith(color: textColor),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: width * 0.2,
+                                            child: Text(
+                                              "Rs.${items![index].rate} ${items![index].sellUom ?? ''}",
+                                              style: Styles.poppins14
+                                                  .copyWith(color: textColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (items![index].variations != null)
+                                      Column(
+                                        children: items![index]
+                                            .variations!
+                                            .map((e1) => Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        // width: width * 0.45,
+                                                        child: Text(
+                                                          e1.variationName
+                                                              .toString(),
+                                                          style: Styles
+                                                              .poppins14
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        //width: width * 0.2,
+                                                        child: Text(
+                                                          "Rs.${e1.rate}",
+                                                          style: Styles
+                                                              .poppins14
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ))
+                                            .toList(),
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

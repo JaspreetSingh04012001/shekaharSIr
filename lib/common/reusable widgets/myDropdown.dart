@@ -6,6 +6,7 @@ class MyDropdown extends StatelessWidget {
   List<String> list;
   String? selectedValue;
   String? labelText;
+  bool shadow;
   Widget? y = Container();
   void Function(String?)? onChanged;
   MyDropdown(
@@ -14,6 +15,7 @@ class MyDropdown extends StatelessWidget {
       required this.selectedValue,
       required this.onChanged,
       required this.labelText,
+      this.shadow = false,
       this.y})
       : super(key: key);
 
@@ -26,10 +28,9 @@ class MyDropdown extends StatelessWidget {
         Container(
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: Styles.myradius2,
-            //boxShadow: Styles.myShadow
-          ),
+              color: Colors.white,
+              borderRadius: Styles.myradius2,
+              boxShadow: shadow ? Styles.myShadow : null),
           child: DropdownButton2<String>(
             //isDense: true,
             underline: Container(),

@@ -222,20 +222,20 @@ class _MenuState extends State<Menu> {
               backgroundColor: Colors.green,
               label: 'Add item in Menu',
               onPressed: () {
-                Get.to(const AddItem());
+                Get.to( AddItem());
               },
               closeSpeedDialOnPressed: true,
             ),
-            SpeedDialChild(
-              child: const Icon(Icons.remove_from_queue_rounded),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.red,
-              label: 'Discontinue item from Menu',
-              onPressed: () {
-                // inventoryController.removeItem(0);
-                // Get.to(const DeleteItem());
-              },
-            ),
+            // SpeedDialChild(
+            //   child: const Icon(Icons.remove_from_queue_rounded),
+            //   foregroundColor: Colors.white,
+            //   backgroundColor: Colors.red,
+            //   label: 'Discontinue item from Menu',
+            //   onPressed: () {
+            //     // inventoryController.removeItem(0);
+            //     // Get.to(const DeleteItem());
+            //   },
+            // ),
             SpeedDialChild(
               child: const Icon(Icons.edit),
               foregroundColor: Colors.white,

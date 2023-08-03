@@ -8,7 +8,7 @@ class Steward {
   String? ON_ROLL;
   String? STEW_TYPE;
   String? SELF_SRV;
-  Steward.fromJson(Map<String, dynamic> json) {
+  Steward.fromJson(Map json) {
     // print("cdcdcd");
     id = json["id"].toString();
     AutoCode = json['AutoCode'];
@@ -22,7 +22,7 @@ class Steward {
   }
 
   tojson() {
-     Map<String, dynamic> json = <String, dynamic>{};
+    Map json = {};
     json["id"] = id;
     json['AutoCode'] = AutoCode;
     json['Steward_Name'] = Steward_Name;

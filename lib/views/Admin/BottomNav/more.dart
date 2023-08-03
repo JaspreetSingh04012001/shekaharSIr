@@ -1,6 +1,7 @@
 import 'package:admin/controllers/outletsController.dart';
 import 'package:admin/views/OutletManager/Manage%20Stewards/stewards.dart';
 import 'package:admin/views/OutletManager/addDepartment.dart';
+import 'package:admin/views/OutletManager/itemModifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -72,6 +73,32 @@ class More extends StatelessWidget {
                     ),
                     title: Text(
                       "Define Categories",
+                      style: Styles.poppins12
+                          .copyWith(fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Get.to(const ItemModifications());
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      boxShadow: Styles.myShadow,
+                      color: Colors.white,
+                      borderRadius: Styles.myradius2),
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.receipt,
+                      color: Color.fromARGB(255, 164, 14, 3),
+                      size: 20,
+                    ),
+                    title: Text(
+                      "Items Modification Enteries",
                       style: Styles.poppins12
                           .copyWith(fontWeight: FontWeight.w400),
                     ),

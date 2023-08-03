@@ -35,4 +35,7 @@ class Bill {
   String? ORD_NO;
   String? SIDE_ORD;
   String? CESS_PERC;
+
+
+  
 }

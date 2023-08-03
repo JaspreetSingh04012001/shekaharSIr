@@ -1,6 +1,5 @@
 import 'package:admin/Models/table.dart' as t;
 import 'package:admin/common/reusable%20widgets/designedTextField.dart';
-import 'package:admin/controllers/storageController.dart';
 import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
 import 'package:admin/views/Tables/perpairingFoodTable.dart';
@@ -27,6 +26,7 @@ class _TablesState extends State<Tables> {
     // final height = MediaQuery.of(context).size.height;
     // final width = MediaQuery.of(context).size.width;
     return GetBuilder<TablesController>(builder: (tablesController) {
+      print(tablesController.tables!.length);
       return Scaffold(
         body: tablesController.tables == null
             ? Center(
@@ -41,13 +41,17 @@ class _TablesState extends State<Tables> {
                     alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: tablesController.tables!.map((e) {
+                      print(e.toJson());
                       if (e.isNormal as bool) {
                         return !(e.isFoodprepairing as bool)
                             ? VacantTables(
+                                table: e,
                                 tableId: e.id ?? '',
                                 type: "Normal",
                                 image: 'assets/1.jpg')
                             : PerpairingFoodTable(
+                                table: e,
+                                orderId: e.orderId,
                                 tittle: "Oder Preparing",
                                 imageLink:
                                     'https://assets2.lottiefiles.com/packages/lf20_vkqybeu5/data.json',
@@ -58,10 +62,13 @@ class _TablesState extends State<Tables> {
                       if (e.isFastFood as bool) {
                         return !(e.isFoodprepairing as bool)
                             ? VacantTables(
+                                table: e,
                                 tableId: e.id ?? '',
                                 type: 'Fast Food',
                                 image: 'assets/fastfood.png')
                             : PerpairingFoodTable(
+                                table: e,
+                                orderId: e.orderId,
                                 tittle: "Prepairing",
                                 imageLink:
                                     'https://assets8.lottiefiles.com/packages/lf20_s5tFhoBEWg.json',
@@ -72,10 +79,13 @@ class _TablesState extends State<Tables> {
                       if (e.isDelivery as bool) {
                         return !(e.isFoodprepairing as bool)
                             ? VacantTables(
+                                table: e,
                                 tableId: e.id ?? '',
                                 type: 'Delivery',
                                 image: 'assets/delivery.png')
                             : PerpairingFoodTable(
+                                table: e,
+                                orderId: e.orderId,
                                 tittle: "Prepairing",
                                 imageLink:
                                     'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
@@ -86,10 +96,13 @@ class _TablesState extends State<Tables> {
                       if (e.isComplimentary as bool) {
                         return !(e.isFoodprepairing as bool)
                             ? VacantTables(
+                                table: e,
                                 tableId: e.id ?? '',
                                 type: 'Complimentary',
                                 image: 'assets/comp.jpg')
                             : PerpairingFoodTable(
+                                table: e,
+                                orderId: e.orderId,
                                 tittle: "Prepairing",
                                 imageLink:
                                     'https://assets3.lottiefiles.com/packages/lf20_s3apehpd.json',
@@ -100,7 +113,6 @@ class _TablesState extends State<Tables> {
                         return Container();
                       }
                     }).toList(),
-               
                   ),
                 ),
               ),
@@ -384,8 +396,8 @@ class _TablesState extends State<Tables> {
                                         isNormal ||
                                         isFastFood) &&
                                     tableId.text.isNotEmpty) {
-                                      //tablesController.addTable()
-                                 tablesController.addTable(t.Table.fromJson({
+                                  //tablesController.addTable()
+                                  tablesController.addTable(t.Table.fromJson({
                                     'AutoCode': tablesController.tables == null
                                         ? 0
                                         : tablesController.tables!.length,
