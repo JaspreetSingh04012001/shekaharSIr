@@ -4,7 +4,6 @@ import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
 import 'package:admin/views/Tables/perpairingFoodTable.dart';
 import 'package:admin/views/Tables/vacantTables.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -26,7 +25,6 @@ class _TablesState extends State<Tables> {
     // final height = MediaQuery.of(context).size.height;
     // final width = MediaQuery.of(context).size.width;
     return GetBuilder<TablesController>(builder: (tablesController) {
-      print(tablesController.tables!.length);
       return Scaffold(
         body: tablesController.tables == null
             ? Center(
@@ -428,161 +426,161 @@ class _TablesState extends State<Tables> {
               },
               closeSpeedDialOnPressed: true,
             ),
-            SpeedDialChild(
-              child: const Icon(Icons.delete),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.red,
-              label: 'Discontinue  Table',
-              onPressed: () {
-                // Get.find<StorageController>().clearTableBox();
-                showAnimatedDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    animationType: DialogTransitionType.slideFromBottomFade,
-                    builder: (context) {
-                      List<String> roles = [];
-                      String? selectedrole;
-                      String? tableType;
-                      for (var element in tablesController.tables!) {
-                        roles.add(element.autoCode);
-                      }
-                      Map data = {};
-                      roles = roles.reversed.toList();
-                      return AlertDialog(
-                        content: StatefulBuilder(
-                            builder: (context, StateSetter setState) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: Styles.myradius2,
-                                    //boxShadow: Styles.myShadow
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton2<String>(
-                                      alignment: Alignment.center,
-                                      //  isDense: true,
-                                      isExpanded: true,
-                                      hint: Text(
-                                        selectedrole ?? 'Select Table',
-                                        style: Styles.poppins14,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      items: roles
-                                          .map((String item) =>
-                                              DropdownMenuItem<String>(
-                                                alignment: Alignment.center,
-                                                value: item,
-                                                child: Text(item,
-                                                    style: Styles.poppins14
-                                                        .copyWith(
-                                                      // fontSize: 18,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )),
-                                              ))
-                                          .toList(),
-                                      value: selectedrole,
-                                      onChanged: (value) {
-                                        print(value);
-                                        setState(() {
-                                          selectedrole = value;
-                                          tablesController.tables!.reversed
-                                              .firstWhere((element) {
-                                            if (element.autoCode == value) {
-                                              data = element.toJson();
-                                              if (data['isComplimentary']) {
-                                                tableType =
-                                                    "Complimentary Table";
-                                              }
-                                              if (data['isNormal']) {
-                                                tableType = "Normal Table";
-                                              }
-                                              if (data['isFastFood']) {
-                                                tableType = "FastFood Table";
-                                              }
-                                              if (data['isDelivery']) {
-                                                tableType = "Delivery Table";
-                                              }
+            // SpeedDialChild(
+            //   child: const Icon(Icons.delete),
+            //   foregroundColor: Colors.white,
+            //   backgroundColor: Colors.red,
+            //   label: 'Discontinue  Table',
+            //   onPressed: () {
+            //     // Get.find<StorageController>().clearTableBox();
+            //     showAnimatedDialog(
+            //         barrierDismissible: false,
+            //         context: context,
+            //         animationType: DialogTransitionType.slideFromBottomFade,
+            //         builder: (context) {
+            //           List<String> roles = [];
+            //           String? selectedrole;
+            //           String? tableType;
+            //           for (var element in tablesController.tables!) {
+            //             roles.add(element.autoCode);
+            //           }
+            //           Map data = {};
+            //           roles = roles.reversed.toList();
+            //           return AlertDialog(
+            //             content: StatefulBuilder(
+            //                 builder: (context, StateSetter setState) {
+            //               return Column(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: [
+            //                   Padding(
+            //                     padding: const EdgeInsets.all(8.0),
+            //                     child: Container(
+            //                       padding: const EdgeInsets.symmetric(
+            //                           vertical: 15, horizontal: 5),
+            //                       decoration: BoxDecoration(
+            //                         color: Colors.white,
+            //                         borderRadius: Styles.myradius2,
+            //                         //boxShadow: Styles.myShadow
+            //                       ),
+            //                       child: DropdownButtonHideUnderline(
+            //                         child: DropdownButton2<String>(
+            //                           alignment: Alignment.center,
+            //                           //  isDense: true,
+            //                           isExpanded: true,
+            //                           hint: Text(
+            //                             selectedrole ?? 'Select Table',
+            //                             style: Styles.poppins14,
+            //                             overflow: TextOverflow.ellipsis,
+            //                           ),
+            //                           items: roles
+            //                               .map((String item) =>
+            //                                   DropdownMenuItem<String>(
+            //                                     alignment: Alignment.center,
+            //                                     value: item,
+            //                                     child: Text(item,
+            //                                         style: Styles.poppins14
+            //                                             .copyWith(
+            //                                           // fontSize: 18,
+            //                                           overflow:
+            //                                               TextOverflow.ellipsis,
+            //                                         )),
+            //                                   ))
+            //                               .toList(),
+            //                           value: selectedrole,
+            //                           onChanged: (value) {
+            //                             print(value);
+            //                             setState(() {
+            //                               selectedrole = value;
+            //                               tablesController.tables!.reversed
+            //                                   .firstWhere((element) {
+            //                                 if (element.autoCode == value) {
+            //                                   data = element.toJson();
+            //                                   if (data['isComplimentary']) {
+            //                                     tableType =
+            //                                         "Complimentary Table";
+            //                                   }
+            //                                   if (data['isNormal']) {
+            //                                     tableType = "Normal Table";
+            //                                   }
+            //                                   if (data['isFastFood']) {
+            //                                     tableType = "FastFood Table";
+            //                                   }
+            //                                   if (data['isDelivery']) {
+            //                                     tableType = "Delivery Table";
+            //                                   }
 
-                                              return true;
-                                            } else {
-                                              return false;
-                                            }
-                                          });
-                                        });
-                                      },
+            //                                   return true;
+            //                                 } else {
+            //                                   return false;
+            //                                 }
+            //                               });
+            //                             });
+            //                           },
 
-                                      dropdownStyleData: DropdownStyleData(
-                                        maxHeight: 1000,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(14),
-                                          color: Colors.white,
-                                        ),
-                                        offset: const Offset(-20, 0),
-                                        scrollbarTheme: ScrollbarThemeData(
-                                          radius: const Radius.circular(40),
-                                          thickness:
-                                              MaterialStateProperty.all(6),
-                                          thumbVisibility:
-                                              MaterialStateProperty.all(true),
-                                        ),
-                                      ),
-                                      menuItemStyleData:
-                                          const MenuItemStyleData(
-                                        height: 40,
-                                        padding: EdgeInsets.only(
-                                            left: 14, right: 14),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (tableType != null)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    tableType.toString(),
-                                    style: Styles.poppins16w400,
-                                  ),
-                                ),
-                              CustomButton(
-                                buttonText: "Delete table",
-                                onTap: () {
-                                  if (data['isOcupied'] ||
-                                      data['isFoodprepairing']) {
-                                    Get.snackbar("Table is Busy",
-                                        "Either it is ocuupied or food is prepairing for it",
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        backgroundColor: Colors.red,
-                                        colorText: Colors.white);
-                                  } else {
-                                    Get.snackbar(
-                                        "Table no. ${data['AutoCode']} removed",
-                                        "Table removed successfully",
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white);
-                                    Navigator.pop(context);
-                                  }
-                                },
-                              )
-                            ],
-                          );
-                        }),
-                      );
-                    });
-                // Get.to(const DeleteItem());
-              },
-            ),
+            //                           dropdownStyleData: DropdownStyleData(
+            //                             maxHeight: 1000,
+            //                             width: 100,
+            //                             decoration: BoxDecoration(
+            //                               borderRadius:
+            //                                   BorderRadius.circular(14),
+            //                               color: Colors.white,
+            //                             ),
+            //                             offset: const Offset(-20, 0),
+            //                             scrollbarTheme: ScrollbarThemeData(
+            //                               radius: const Radius.circular(40),
+            //                               thickness:
+            //                                   MaterialStateProperty.all(6),
+            //                               thumbVisibility:
+            //                                   MaterialStateProperty.all(true),
+            //                             ),
+            //                           ),
+            //                           menuItemStyleData:
+            //                               const MenuItemStyleData(
+            //                             height: 40,
+            //                             padding: EdgeInsets.only(
+            //                                 left: 14, right: 14),
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   if (tableType != null)
+            //                     Padding(
+            //                       padding: const EdgeInsets.all(8.0),
+            //                       child: Text(
+            //                         tableType.toString(),
+            //                         style: Styles.poppins16w400,
+            //                       ),
+            //                     ),
+            //                   CustomButton(
+            //                     buttonText: "Delete table",
+            //                     onTap: () {
+            //                       if (data['isOcupied'] ||
+            //                           data['isFoodprepairing']) {
+            //                         Get.snackbar("Table is Busy",
+            //                             "Either it is ocuupied or food is prepairing for it",
+            //                             snackPosition: SnackPosition.BOTTOM,
+            //                             backgroundColor: Colors.red,
+            //                             colorText: Colors.white);
+            //                       } else {
+            //                         Get.snackbar(
+            //                             "Table no. ${data['AutoCode']} removed",
+            //                             "Table removed successfully",
+            //                             snackPosition: SnackPosition.BOTTOM,
+            //                             backgroundColor: Colors.green,
+            //                             colorText: Colors.white);
+            //                         Navigator.pop(context);
+            //                       }
+            //                     },
+            //                   )
+            //                 ],
+            //               );
+            //             }),
+            //           );
+            //         });
+            //     // Get.to(const DeleteItem());
+            //   },
+            // ),
 
             //  Your other SpeedDialChildren go here.
           ],

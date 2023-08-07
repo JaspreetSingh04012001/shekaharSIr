@@ -2,6 +2,7 @@ import 'package:admin/Models/item.dart';
 import 'package:admin/Models/itemsVariation.dart';
 import 'package:admin/Services/utils.dart';
 import 'package:admin/common/app_styles_colors.dart';
+import 'package:admin/common/reusable%20widgets/alertbackbutton.dart';
 import 'package:admin/common/reusable%20widgets/designedTextField.dart';
 import 'package:admin/common/reusable%20widgets/myDropdown.dart';
 import 'package:admin/controllers/inventoryController.dart';
@@ -11,6 +12,7 @@ import 'package:admin/reuseable%20Widgets/animated_dialog.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
 import 'package:admin/views/Menu/editItem.dart';
 import 'package:admin/views/OutletManager/addDepartment.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -179,6 +181,178 @@ class _AddItemState extends State<AddItem> {
           widget.edit ? "Edit Item" : "Add Item in Menu",
           style: Styles.poppins18w600,
         ),
+        actions: [
+          ResponsiveHelper.isMobile(context)
+              ? GetBuilder<InventoryController>(builder: (inventoryController) {
+                  int itemsLength = 0;
+                  if (inventoryController.recentlyAddedItems.isNotEmpty) {
+                    itemsLength = inventoryController.recentlyAddedItems.length;
+                  }
+
+                  return InkWell(
+                    onTap: () {
+                      if (itemsLength > 0) {
+                        showAnimatedDialog(
+                            context: context,
+                            builder: (context) {
+                              return Scaffold(
+                                extendBody: false,
+                                body: SingleChildScrollView(
+                                  child: Column(
+                                    //  mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if (ResponsiveHelper.isMobile(context))
+                                        const Gap(50),
+                                      if (ResponsiveHelper.isMobile(context))
+                                        const Alertbackbutton(),
+                                      Text(
+                                        "Recenty Added Items",
+                                        style: Styles.poppins14.copyWith(
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      const Gap(5),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: inventoryController
+                                            .recentlyAddedItems.reversed
+                                            .toList()
+                                            .map((e) => Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 5),
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10),
+                                                    // height: 20,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        boxShadow:
+                                                            Styles.myShadow,
+                                                        borderRadius:
+                                                            Styles.myradius2),
+                                                    child:
+                                                        // mainAxisSize: MainAxisSize.min,
+
+                                                        Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                e.itemname
+                                                                    .toString(),
+                                                                style: Styles
+                                                                    .poppins14,
+                                                              ),
+                                                              Text(
+                                                                "Rs${e.rate.toString()}${e.sellUom != null ? "/${e.sellUom}" : ""}",
+                                                                style: Styles
+                                                                    .poppins14,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          if (e.variations !=
+                                                              null)
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Column(
+                                                                children: e
+                                                                    .variations!
+                                                                    .map((e1) =>
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(horizontal: 5),
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text(e1.variationName.toString()),
+                                                                              Text("Rs.${e1.rate}")
+                                                                            ],
+                                                                          ),
+                                                                        ))
+                                                                    .toList(),
+                                                              ),
+                                                            )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: badges.Badge(
+                        position:
+                            badges.BadgePosition.topEnd(top: -15, end: -12),
+                        showBadge: true,
+                        ignorePointer: true,
+                        badgeContent: Text(
+                          "$itemsLength",
+                          style: Styles.poppins14w400
+                              .copyWith(color: Colors.white),
+                        ),
+                        badgeAnimation: const badges.BadgeAnimation.rotation(
+                          animationDuration: Duration(seconds: 1),
+                          colorChangeAnimationDuration: Duration(seconds: 1),
+                          loopAnimation: false,
+                          curve: Curves.fastOutSlowIn,
+                          colorChangeAnimationCurve: Curves.easeInCubic,
+                        ),
+                        badgeStyle: badges.BadgeStyle(
+                          shape: badges.BadgeShape.circle,
+                          badgeColor: Styles.primaryColor,
+                          //padding: const EdgeInsets.all(5),
+                          // borderRadius: BorderRadius.circular(4),
+                          borderSide:
+                              const BorderSide(color: Colors.white, width: 0),
+                          // borderGradient: const badges.BadgeGradient.linear(
+                          //     colors: [Colors.red, Colors.black]),
+                          // badgeGradient: const badges.BadgeGradient.linear(
+                          //   colors: [Colors.blue, Colors.yellow],
+                          //   begin: Alignment.topCenter,
+                          //   end: Alignment.bottomCenter,
+                          // ),
+                          elevation: 1,
+                        ),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: Styles.primaryColor,
+                        ),
+                      ),
+                    ),
+                  );
+                })
+              : Container(
+                  width: 15,
+                ),
+          Container(
+            width: 15,
+          )
+        ],
       ),
       body: GetBuilder<InventoryController>(builder: (inventoryController) {
         // print(inventoryController.autoCodes);
@@ -226,6 +400,7 @@ class _AddItemState extends State<AddItem> {
                                           "Please enter diiferent Id",
                                           snackPosition: SnackPosition.BOTTOM,
                                           backgroundColor: Colors.red,
+                                          colorText: Colors.white,
                                         );
                                       } else {
                                         setState(() {

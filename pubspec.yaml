@@ -61,6 +61,7 @@ dependencies:
   throttling: ^1.0.0
   permission_handler: ^10.4.3
   path_provider: ^2.0.15
+  badges: ^3.1.1
   
 
 dev_dependencies:

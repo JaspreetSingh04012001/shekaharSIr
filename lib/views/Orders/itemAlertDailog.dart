@@ -243,8 +243,11 @@ class _ItemAlertDailogState extends State<ItemAlertDailog> {
                 ),
                 style: const TextStyle(fontSize: 16.0),
                 onChanged: (v) {
-                  widget.quantity = double.parse(v);
-                  setPrice();
+                  v = v.trim();
+                  if (v != "") {
+                    widget.quantity = double.parse(v);
+                    setPrice();
+                  } else {}
                 },
               ),
             ),
@@ -274,6 +277,36 @@ class _ItemAlertDailogState extends State<ItemAlertDailog> {
         ),
         const Divider(color: Colors.grey),
         GetBuilder<CartController>(builder: (cartController) {
+          String selectedTableid = cartController.selectedTable!.id.toString();
+          void kotNull() {
+            final DateTime now = DateTime.now();
+            final DateFormat formatter = DateFormat('yyyy-MM-dd');
+            final DateFormat timeformatter = DateFormat('Hm');
+            final String date = formatter.format(now);
+            final String time = timeformatter.format(now);
+            var id = cartController.assignKotId().toString();
+            cartController.setcurrentKotOnTable(Kot.fromjson({
+              "KOTNo": id,
+              "kotItems": [
+                {
+                  'quantity': quantityText.text.toString(),
+                  'item': widget.item.tojson(),
+                  if (variationsSelections != null)
+                    'selectedVariation': variationsSelections!.contains(true)
+                        ? widget.item
+                            .variations![variationsSelections!.indexOf(true)]
+                            .tojson()
+                        : null,
+                  'price': price,
+                }
+              ],
+              "Date": date,
+              "Time": time,
+              "TableID": cartController.selectedTable!.id.toString(),
+              "totalprice": price,
+            }));
+          }
+
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -281,45 +314,13 @@ class _ItemAlertDailogState extends State<ItemAlertDailog> {
                 CustomButton(
                   buttonText: "Add as new Item",
                   onTap: () {
-                    cartController
-                        .tableKot[cartController.selectedTable!.id.toString()]!
-                        .kotItems!
-                        .add(KotItem.fromjson({
-                      'quantity': quantityText.text.toString(),
-                      'item': widget.item.tojson(),
-                      if (variationsSelections != null)
-                        'selectedVariation':
-                            variationsSelections!.contains(true)
-                                ? widget
-                                    .item
-                                    .variations![
-                                        variationsSelections!.indexOf(true)]
-                                    .tojson()
-                                : null,
-                      'price': price,
-                    }));
-                    cartController.update();
-                    Navigator.pop(context);
-                  },
-                ),
-              CustomButton(
-                buttonText:
-                    widget.isKotItem ? "Update Current item" : "Add to Cart",
-                onTap: () {
-                  final DateTime now = DateTime.now();
-                  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                  final DateFormat timeformatter = DateFormat('Hm');
-                  final String date = formatter.format(now);
-                  final String time = timeformatter.format(now);
-
-                  if (cartController.tableKot[
-                          cartController.selectedTable!.id.toString()] ==
-                      null) {
-                    var id = cartController.assignKotId().toString();
-                    cartController.setcurrentKotOnTable(Kot.fromjson({
-                      "KOTNo": id,
-                      "kotItems": [
-                        {
+                    if (cartController.tableKot[selectedTableid] == null) {
+                      kotNull();
+                    } else {
+                      if (cartController.tableKot[selectedTableid]?.kotItems !=
+                          null) {
+                        cartController.tableKot[selectedTableid]!.kotItems!
+                            .add(KotItem.fromjson({
                           'quantity': quantityText.text.toString(),
                           'item': widget.item.tojson(),
                           if (variationsSelections != null)
@@ -332,18 +333,25 @@ class _ItemAlertDailogState extends State<ItemAlertDailog> {
                                         .tojson()
                                     : null,
                           'price': price,
-                        }
-                      ],
-                      "Date": date,
-                      "Time": time,
-                      "TableID": cartController.selectedTable!.id.toString(),
-                      "totalprice": price,
-                    }));
+                        }));
+                      } else {
+                        quantityText.text = widget.kotItem!.quantity;
+                      }
+                    }
+
+                    cartController.update();
+                    Navigator.pop(context);
+                  },
+                ),
+              CustomButton(
+                buttonText:
+                    widget.isKotItem ? "Update Current item" : "Add to Cart",
+                onTap: () {
+                  if (cartController.tableKot[selectedTableid] == null) {
+                    kotNull();
                   } else {
                     widget.isKotItem
-                        ? cartController
-                                .tableKot[cartController.selectedTable!.id
-                                    .toString()]!
+                        ? cartController.tableKot[selectedTableid]!
                                 .kotItems![widget.indexofKotItem ?? 0] =
                             KotItem.fromjson({
                             'quantity': quantityText.text.toString(),
@@ -359,10 +367,7 @@ class _ItemAlertDailogState extends State<ItemAlertDailog> {
                                   : null,
                             'price': price,
                           })
-                        : cartController
-                            .tableKot[
-                                cartController.selectedTable!.id.toString()]!
-                            .kotItems!
+                        : cartController.tableKot[selectedTableid]!.kotItems!
                             .add(KotItem.fromjson({
                             'quantity': quantityText.text.toString(),
                             'item': widget.item.tojson(),

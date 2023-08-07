@@ -40,7 +40,8 @@ init() async {
   Get.find<StorageController>().modificationsBox =
       await Hive.openBox('modificationsBox');
   Get.find<StorageController>().ordersBox = await Hive.openBox('ordersBox');
-  
+
+  //Get.find<StorageController>().eraseAll();
 
   //Get.lazyPut(() => DbController());
 }

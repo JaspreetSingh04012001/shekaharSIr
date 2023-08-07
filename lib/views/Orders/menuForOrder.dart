@@ -106,7 +106,10 @@ class _MenuForOrderState extends State<MenuForOrder> {
   @override
   void initState() {
     items = Get.find<InventoryController>().items;
-    filter();
+    if (items != null) {
+      filter();
+    }
+
     // TODO: implement initState
     super.initState();
   }
@@ -332,8 +335,8 @@ class _MenuForOrderState extends State<MenuForOrder> {
                                         borderRadius: Styles.myradius2),
                                     content: inOrder
                                         ? ItemAlertDailog(
-                                          indexofKotItem: kotItemIndex[
-                                                    items![index].autoCode],
+                                            indexofKotItem: kotItemIndex[
+                                                items![index].autoCode],
                                             item: items![index],
                                             isKotItem: true,
                                             kotItem: cartController

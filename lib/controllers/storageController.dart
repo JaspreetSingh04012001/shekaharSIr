@@ -14,10 +14,15 @@ import '../Models/outlet.dart';
 
 class StorageController extends GetxController {
   final box = GetStorage();
-  var boxHive;
-  var modificationsBox;
+  late Box<dynamic> boxHive;
+  late Box<dynamic> modificationsBox;
   late Box<dynamic> ordersBox;
-
+eraseAll(){
+  ordersBox.clear();
+  box.erase();
+  boxHive.clear();
+  ordersBox.clear();
+}
   upadteItemModifications(Item item) {
     var date = DateTime.now().toString();
 
@@ -82,6 +87,8 @@ class StorageController extends GetxController {
         .trim()
         .replaceAll(" ", "");
   }
+
+
 
   upadteKotsInStorage(Kot k) {
     List? kots = getKotsFromStorage();
@@ -178,11 +185,12 @@ class StorageController extends GetxController {
   }
 
   addNewItemInventory(Item item) async {
+    upadteItemModifications(item);
     List<Item>? items = getItemsfromInventory() ?? [];
     items.add(item);
     updateItemsInStorage(items);
 
-    upadteItemModifications(item);
+    
     // outletInventoryBox.write(
     //     uniquedKeyForInventoryBox(), items.map((e) => e.tojson()).toList());
 

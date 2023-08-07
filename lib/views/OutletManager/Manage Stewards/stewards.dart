@@ -12,7 +12,7 @@ class Stewards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OutletsController>(builder: (outletsController) {
-      print(outletsController.selelctedOutlet!.activeStewards!.length);
+   //   print(outletsController.selelctedOutlet!.activeStewards!.length);
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

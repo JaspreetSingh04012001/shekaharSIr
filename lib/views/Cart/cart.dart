@@ -1,4 +1,6 @@
 import 'package:admin/Models/Order.dart';
+import 'package:admin/Services/utils.dart';
+import 'package:admin/common/reusable%20widgets/alertbackbutton.dart';
 import 'package:admin/common/reusable%20widgets/rightBoldText.dart';
 import 'package:admin/controllers/OrdersController.dart';
 import 'package:admin/controllers/cartController.dart';
@@ -43,13 +45,16 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
-    for (var element
-        in Get.find<OutletsController>().selelctedOutlet!.activeStewards!) {
-      if (stewardNames.contains(element.Steward_Name)) {
-      } else {
-        stewardNames.add(element.Steward_Name.toString());
+    if (Get.find<OutletsController>().selelctedOutlet?.activeStewards != null) {
+      for (var element
+          in Get.find<OutletsController>().selelctedOutlet!.activeStewards!) {
+        if (stewardNames.contains(element.Steward_Name)) {
+        } else {
+          stewardNames.add(element.Steward_Name.toString());
+        }
       }
     }
+
     return Scaffold(
       body: GetBuilder<CartController>(builder: (cartController) {
         double x = 0;
@@ -72,13 +77,22 @@ class _CartState extends State<Cart> {
               crossAxisAlignment: CrossAxisAlignment.center,
               //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Gap(8),
-                Text(
-                  "Table Id ${cartController.selectedTable!.id}",
-                  style: Styles.poppins16w400,
+                if (ResponsiveHelper.isMobile(context)) const Gap(15),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Table Id ${cartController.selectedTable!.id}",
+                      style: Styles.poppins16w400,
+                    ),
+                    if (ResponsiveHelper.isMobile(context))
+                      const Alertbackbutton(),
+                  ],
                 ),
                 const Gap(8),
                 Row(
+                  mainAxisSize: MainAxisSize.max,
                   //  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Gap(5),
@@ -594,62 +608,68 @@ class _CartState extends State<Cart> {
                   ],
                 ),
                 RightBoldText(title: "Total", val: "Rs $totalprice"),
-                GetBuilder<StorageController>(builder: (storageController) {
-                  String tableId = cartController.selectedTable!.id.toString();
-                  var tablesController = Get.find<TablesController>();
-                  return CustomButton(
-                    onTap: () async {
-                      String orderId = Get.find<OrdersController>()
-                          .assignOrderId()
-                          .toString();
-                      cartController.tableKot[tableId]?.KOTNo =
-                          cartController.assignKotId();
-                      cartController.tableKot[tableId]?.totalprice = totalprice;
-                      cartController.update();
+                if (totalprice > 0)
+                  GetBuilder<StorageController>(builder: (storageController) {
+                    String tableId =
+                        cartController.selectedTable!.id.toString();
+                    var tablesController = Get.find<TablesController>();
+                    return CustomButton(
+                      onTap: () async {
+                        String orderId = Get.find<OrdersController>()
+                            .assignOrderId()
+                            .toString();
+                        cartController.tableKot[tableId]?.KOTNo =
+                            cartController.assignKotId();
+                        cartController.tableKot[tableId]?.totalprice =
+                            totalprice;
+                        cartController.update();
 
-                      storageController.upadteKotsInStorage(
-                          cartController.tableKot[tableId]!);
-                      storageController.addOrderInStorage(Order.fromJson({
-                        if (selectedSteward != null)
-                          "steward": selectedSteward!.tojson(),
-                        "orderId": orderId,
-                        "date": cartController.tableKot[tableId]?.Date,
-                        "time": cartController.tableKot[tableId]?.Time,
-                        "tableID": tableId,
-                        "paymentStatus": isPaymnetDone,
-                        "totalprice": totalprice,
-                        "kots": [cartController.tableKot[tableId]!.toJson()]
-                      }));
-                      Get.snackbar("Order Taken $orderId",
-                          "Order taken on Table $tableId",
-                          backgroundColor:
-                              const Color.fromARGB(255, 63, 145, 66),
-                          colorText: Colors.white,
-                          snackPosition: SnackPosition.BOTTOM,
-                          duration: const Duration(seconds: 2));
-                      tablesController.tables!.firstWhere((element) {
-                        if (tableId == element.id) {
-                          int indexx =
-                              tablesController.tables!.indexOf(element);
-                          tablesController.tables![indexx].isFoodprepairing =
-                              true;
-                          tablesController.tables![indexx].orderId = orderId;
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      });
-                      tablesController.update();
-                      Get.find<StorageController>()
-                          .updateTablesInStorage(tablesController.tables!);
-                      Future.delayed(const Duration(seconds: 3))
-                          .whenComplete(() => Get.off(const AdminHome()));
-                    },
-                    // height: 30,
-                    //width: double.infinity,
-                    buttonText: "Place Order",
-                  );
-                })
+                        storageController.upadteKotsInStorage(
+                            cartController.tableKot[tableId]!);
+                        storageController.addOrderInStorage(Order.fromJson({
+                          if (selectedSteward != null)
+                            "steward": selectedSteward!.tojson(),
+                          "orderId": orderId,
+                          "date": cartController.tableKot[tableId]?.Date,
+                          "time": cartController.tableKot[tableId]?.Time,
+                          "tableID": tableId,
+                          "paymentStatus": isPaymnetDone,
+                          "totalprice": totalprice,
+                          "kots": [cartController.tableKot[tableId]!.toJson()]
+                        }));
+                        Get.snackbar("Order Taken $orderId",
+                            "Order taken on Table $tableId",
+                            backgroundColor:
+                                const Color.fromARGB(255, 63, 145, 66),
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: const Duration(seconds: 2));
+                        tablesController.tables!.firstWhere((element) {
+                          if (tableId == element.id) {
+                            int indexx =
+                                tablesController.tables!.indexOf(element);
+                            tablesController.tables![indexx].isFoodprepairing =
+                                true;
+                            tablesController.tables![indexx].orderId = orderId;
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        });
+                        tablesController.update();
+                        Get.find<StorageController>()
+                            .updateTablesInStorage(tablesController.tables!);
+                        Future.delayed(const Duration(seconds: 3))
+                            .whenComplete(() {
+                          cartController.tableKot.remove(tableId);
+                          Get.offAll(const AdminHome());
+                        });
+                      },
+                      // height: 30,
+                      //width: double.infinity,
+                      buttonText: "Place Order",
+                    );
+                  })
               ],
             ),
           ),
