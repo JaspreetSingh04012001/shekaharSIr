@@ -21,7 +21,7 @@ class CustomLineIndicatorBottomNavbar extends StatelessWidget {
   final double unselectedIconSize;
   final LinearGradient? gradient;
 
-  CustomLineIndicatorBottomNavbar({
+  const CustomLineIndicatorBottomNavbar({super.key, 
     this.backgroundColor,
     this.selectedColor,
     required this.customBottomBarItems,
@@ -109,7 +109,7 @@ class CustomLineIndicatorBottomNavbarItems extends StatelessWidget {
   final IndicatorType indicatorType;
   //final Color? myColor;
 
-  CustomLineIndicatorBottomNavbarItems({
+  const CustomLineIndicatorBottomNavbarItems({super.key, 
     this.icon,
     this.label,
     this.selectedColor,
@@ -156,7 +156,7 @@ class CustomLineIndicatorBottomNavbarItems extends StatelessWidget {
                                     : Colors.transparent,
                                 width: lineIndicatorWidth,
                               )
-                            : BorderSide(color: Colors.transparent),
+                            : const BorderSide(color: Colors.transparent),
                         top: indicatorType == IndicatorType.Top
                             ? BorderSide(
                                 color: currentIndex == index
@@ -165,11 +165,11 @@ class CustomLineIndicatorBottomNavbarItems extends StatelessWidget {
                                     : Colors.transparent,
                                 width: lineIndicatorWidth,
                               )
-                            : BorderSide(color: Colors.transparent),
+                            : const BorderSide(color: Colors.transparent),
                       )
                     : null,
               ),
-              padding: EdgeInsets.symmetric(vertical: 7.0),
+              padding: const EdgeInsets.symmetric(vertical: 7.0),
               // width: 70,
               // height: 60,
               child: Column(
@@ -183,7 +183,7 @@ class CustomLineIndicatorBottomNavbarItems extends StatelessWidget {
                         ? selectedColor ?? bottomTheme.unselectedItemColor
                         : unSelectedColor,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5.0,
                   ),
                   Text(

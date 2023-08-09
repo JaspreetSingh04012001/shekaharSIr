@@ -21,6 +21,7 @@ class Item {
   String? qty;
   String? sellUom;
   String? altName;
+  String? hsn;
   bool? isRateDeciaml;
   List<ItemVariation>? variations;
   Item.fromjson(Map json) {
@@ -45,6 +46,7 @@ class Item {
 
     sellUom = json["sellUom"];
     altName = json["altName"];
+    hsn = json["hsn"];
     category = json["category"];
     type = json["type"];
     isRateDeciaml = json["isRateDeciaml"];
@@ -78,6 +80,7 @@ class Item {
       "category": category,
       "type": type,
       "isRateDeciaml": isRateDeciaml,
+      "hsn" : hsn
     };
     if (variations != null) {
       data["variations"] = variations?.map((v) => v.tojson()).toList();

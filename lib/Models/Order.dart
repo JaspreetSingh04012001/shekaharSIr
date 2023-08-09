@@ -9,6 +9,7 @@ class Order {
   String? tableID;
   List<Kot>? kots;
   bool paymentStatus = false;
+  bool tableCleared = false;
   var totalprice = 0.0;
 
   Order.fromJson(Map json) {
@@ -27,6 +28,7 @@ class Order {
     time = json["time"].toString();
     tableID = json["tableID"].toString();
     paymentStatus = json["paymentStatus"] ?? false;
+    tableCleared = json["tableCleared"] ?? false;
     totalprice = json["totalprice"];
   }
   Map<String, dynamic> tojson() {
@@ -39,6 +41,7 @@ class Order {
     json["time"] = time;
     json["tableID"] = tableID;
     json["paymentStatus"] = paymentStatus;
+    json["tableCleared"] = tableCleared;
     json["totalprice"] = totalprice;
     if (kots != null) {
       json["kots"] = kots!.map((e) => e.toJson()).toList();

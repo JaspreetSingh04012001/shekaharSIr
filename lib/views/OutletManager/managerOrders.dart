@@ -1,6 +1,7 @@
 import 'package:admin/common/app_styles_colors.dart';
 import 'package:admin/controllers/OrdersController.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
+import 'package:admin/views/Orders/viewOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,7 +62,15 @@ class ManagerOrders extends StatelessWidget {
                                       Text(
                                           "Payment : ${e.paymentStatus ? "  Done  " : "Pending"}",
                                           style: Styles.poppins16w400),
-                                      CustomButton(buttonText: "   View  ")
+                                      Text(
+                                          "Table : ${e.tableCleared ? "  Cleared  " : "Occupied"}",
+                                          style: Styles.poppins16w400),
+                                      CustomButton(
+                                        buttonText: "   View  ",
+                                        onTap: () {
+                                          Get.to(ViewOrder(order: e,));
+                                        },
+                                      )
                                     ],
                                   ),
                                 ),

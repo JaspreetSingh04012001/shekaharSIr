@@ -176,6 +176,10 @@ class _PerpairingFoodTableState extends State<PerpairingFoodTable> {
                                               .orders![ordersController.orders!
                                                   .indexOf(element)]
                                               .paymentStatus = true;
+                                          ordersController
+                                              .orders![ordersController.orders!
+                                                  .indexOf(element)]
+                                              .tableCleared = true;
 
                                           ordersController.update();
                                           storageController

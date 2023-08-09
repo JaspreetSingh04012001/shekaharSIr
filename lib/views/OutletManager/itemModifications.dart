@@ -164,6 +164,13 @@ class ItemModifications extends StatelessWidget {
                                                         val: tempdata[keyss[0]]
                                                             ["altName"]),
                                                   if (tempdata[keyss[0]]
+                                                          ["hsn"] !=
+                                                      null)
+                                                    RightBoldText(
+                                                        title: "HSN",
+                                                        val: tempdata[keyss[0]]
+                                                            ["hsn"]),
+                                                  if (tempdata[keyss[0]]
                                                           ["variations"] !=
                                                       null)
                                                     Text(

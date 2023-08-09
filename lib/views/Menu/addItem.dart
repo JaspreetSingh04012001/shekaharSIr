@@ -59,7 +59,9 @@ class _AddItemState extends State<AddItem> {
   TextEditingController discount = TextEditingController();
   TextEditingController unit = TextEditingController();
   TextEditingController altName = TextEditingController();
+  TextEditingController hsn = TextEditingController();
 
+  bool isHSN = false;
   bool idAlreadyExists = false;
   bool isUnit = false;
   bool isFinishedGood = false;
@@ -91,6 +93,7 @@ class _AddItemState extends State<AddItem> {
       isUnit = false;
       isNonVeg = false;
       isEggMade = false;
+      isHSN = false;
       selectedDepartment = null;
       selectedCategory = null;
       selectedType = null;
@@ -105,6 +108,7 @@ class _AddItemState extends State<AddItem> {
       discount.clear();
       unit.clear();
       altName.clear();
+      hsn.clear();
       Variations.clear();
     });
   }
@@ -144,6 +148,10 @@ class _AddItemState extends State<AddItem> {
         if (widget.editItem?.cess != null) {
           cess.text = widget.editItem!.cess.toString();
         }
+        if (widget.editItem?.hsn != null) {
+          isHSN = true;
+          hsn.text = widget.editItem!.hsn.toString();
+        }
         isInclusive = widget.editItem!.inclusive ?? false;
       }
       if (widget.editItem?.altName != null) {
@@ -153,6 +161,7 @@ class _AddItemState extends State<AddItem> {
       if (widget.editItem?.variations != null) {
         Variations = widget.editItem!.variations!;
       }
+      setState(() {});
       // Get.find<InventoryController>();
       // catrgories = Get.find<OutletsController>().selelctedOutlet!.categories;
 
@@ -895,12 +904,12 @@ class _AddItemState extends State<AddItem> {
                                       keyboardType: TextInputType.number,
                                       controller: cess,
                                       labelText: ' CESS On GST(%)',
-                                      validate: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Can not be empty';
-                                        }
-                                        return null;
-                                      },
+                                      // validate: (value) {
+                                      //   if (value!.isEmpty) {
+                                      //     return 'Can not be empty';
+                                      //   }
+                                      //   return null;
+                                      // },
                                       //  keyboardType: TextInputType.number,
                                     ),
                                   ),
@@ -1047,6 +1056,64 @@ class _AddItemState extends State<AddItem> {
                                       labelText: 'Enter Alternate Name',
                                       validate: (value) {
                                         if (value!.isEmpty && isAltName) {
+                                          return 'Can not be empty';
+                                        }
+                                        return null;
+                                      },
+                                      //  keyboardType: TextInputType.number,
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    side: const BorderSide(
+                                      width: 3,
+                                      color: Colors
+                                          .black, // Add a border to make it more visible
+                                    ),
+                                  ),
+                                  activeColor: Colors
+                                      .blue, // Customize the checkbox's color when checked
+                                  checkColor: Colors
+                                      .white, // Customize the check icon's color
+                                  fillColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                    // Customize the checkbox's color when unchecked
+                                    if (states
+                                        .contains(MaterialState.selected)) {
+                                      return Styles
+                                          .primaryColor; // Make it semi-transparent when unchecked
+                                    }
+                                    return Colors.black;
+                                  }),
+                                  value: isHSN,
+                                  onChanged: (v) {
+                                    setState(() {
+                                      isHSN = !isHSN;
+                                    });
+                                  }),
+                              // const Gap(5),
+                              Text(
+                                "HSN",
+                                style: Styles.poppins14,
+                              ),
+                              const Gap(5),
+                              if (isHSN)
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: DesignedTextField(
+                                      controller: hsn,
+                                      labelText: 'Enter HSN',
+                                      validate: (value) {
+                                        if (value!.isEmpty && isHSN) {
                                           return 'Can not be empty';
                                         }
                                         return null;
@@ -1341,6 +1408,7 @@ class _AddItemState extends State<AddItem> {
                                           : !isInclusive
                                       : null,
                                   if (isTaxGst) "cess": cess.text,
+                                  if (isHSN) "hsn": hsn.text,
                                   "discountable": isDiscountAble,
                                   if (discount.text.isNotEmpty &&
                                       isDiscountAble)
@@ -1383,6 +1451,7 @@ class _AddItemState extends State<AddItem> {
                                           ? isInclusive
                                           : !isInclusive
                                       : null,
+                                  if (isHSN) "hsn": hsn.text,
                                   if (isTaxGst) "cess": cess.text,
                                   "discountable": isDiscountAble,
                                   if (discount.text.isNotEmpty)
@@ -1474,7 +1543,7 @@ class _AddItemState extends State<AddItem> {
                                               style: Styles.poppins14,
                                             ),
                                             Text(
-                                              "Rs${e.rate.toString()}/${e.sellUom.toString()}",
+                                              "Rs${e.rate.toString()}${e.sellUom == null ? "" : "/${e.sellUom}"}",
                                               style: Styles.poppins14,
                                             ),
                                           ],

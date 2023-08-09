@@ -6,7 +6,7 @@ class CacheProfileImage extends StatelessWidget {
   String url;
   double radius;
   double? height;
-  CacheProfileImage({required this.url, required this.radius, this.height});
+  CacheProfileImage({super.key, required this.url, required this.radius, this.height});
 
   @override
   Widget build(BuildContext context) {
