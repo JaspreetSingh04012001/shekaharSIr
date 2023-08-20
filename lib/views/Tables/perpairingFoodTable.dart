@@ -3,6 +3,7 @@ import 'package:admin/controllers/OrdersController.dart';
 import 'package:admin/controllers/tablesController.dart';
 import 'package:admin/reuseable%20Widgets/animated_dialog.dart';
 import 'package:admin/reuseable%20Widgets/customButton.dart';
+import 'package:admin/views/Orders/viewOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -76,12 +77,25 @@ class _PerpairingFoodTableState extends State<PerpairingFoodTable> {
               //  style: Styles.poppins16w400,
             ),
             const Gap(3),
-            CustomButton(
-              shadow: false,
-              verPad: 0,
-              buttonText: "View",
-              color: Colors.orange,
-            ),
+            GetBuilder<OrdersController>(builder: (ordersController) {
+              return CustomButton(
+                onTap: () {
+                  ordersController.orders!.firstWhere((element) {
+                    if (element.orderId == widget.orderId) {
+                      Get.to(ViewOrder(order: element));
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                  // Get.to(ViewOrder(order: o));
+                },
+                shadow: false,
+                verPad: 0,
+                buttonText: "View",
+                color: Colors.orange,
+              );
+            }),
             CustomButton(
               onTap: () {
                 showAnimatedDialog(
@@ -125,7 +139,6 @@ class _PerpairingFoodTableState extends State<PerpairingFoodTable> {
                             children: [
                               Expanded(
                                   child: CustomButton(
-                                    
                                 horPad: 0,
                                 onTap: () {
                                   Navigator.pop(context);

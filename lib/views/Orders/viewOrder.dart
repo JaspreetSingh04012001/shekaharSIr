@@ -1,4 +1,5 @@
 import 'package:admin/common/app_styles_colors.dart';
+import 'package:admin/reuseable%20Widgets/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -15,7 +16,16 @@ class ViewOrder extends StatefulWidget {
 class _ViewOrderState extends State<ViewOrder> {
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+    final double height = MediaQuery.sizeOf(context).height;
     return Scaffold(
+      floatingActionButton: SizedBox(
+        width: width,
+        height: 60,
+        child: Row(
+          children: [CustomButton(buttonText: "Cancel")],
+        ),
+      ),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -25,67 +35,80 @@ class _ViewOrderState extends State<ViewOrder> {
       ),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Wrap(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RichText(
-                text: TextSpan(
-                  //   style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
-                      text: "Date : ",
-                      style: Styles.poppins14,
-                    ),
-                    TextSpan(
-                      text: widget.order.date,
-                      style: Styles.poppins16w400,
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: RichText(
+                  text: TextSpan(
+                    //   style: DefaultTextStyle.of(context).style,
+                    children: [
+                      TextSpan(
+                        text: "Date : ",
+                        style: Styles.poppins14,
+                      ),
+                      TextSpan(
+                        text: widget.order.date,
+                        style: Styles.poppins16w400,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  //   style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
-                      text: "Time : ",
-                      style: Styles.poppins14,
-                    ),
-                    TextSpan(
-                      text: widget.order.time,
-                      style: Styles.poppins16w400,
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: RichText(
+                  text: TextSpan(
+                    //   style: DefaultTextStyle.of(context).style,
+                    children: [
+                      TextSpan(
+                        text: "Time : ",
+                        style: Styles.poppins14,
+                      ),
+                      TextSpan(
+                        text: widget.order.time,
+                        style: Styles.poppins16w400,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  //   style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
-                      text: "Table ID : ",
-                      style: Styles.poppins14,
-                    ),
-                    TextSpan(
-                      text: widget.order.tableID,
-                      style: Styles.poppins16w400,
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: RichText(
+                  text: TextSpan(
+                    //   style: DefaultTextStyle.of(context).style,
+                    children: [
+                      TextSpan(
+                        text: "Table ID : ",
+                        style: Styles.poppins14,
+                      ),
+                      TextSpan(
+                        text: widget.order.tableID,
+                        style: Styles.poppins16w400,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  //   style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
-                      text: "Total: ",
-                      style: Styles.poppins14,
-                    ),
-                    TextSpan(
-                      text: widget.order.totalprice.toString(),
-                      style: Styles.poppins16w400,
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: RichText(
+                  text: TextSpan(
+                    //   style: DefaultTextStyle.of(context).style,
+                    children: [
+                      TextSpan(
+                        text: "Total: ",
+                        style: Styles.poppins14,
+                      ),
+                      TextSpan(
+                        text: widget.order.totalprice.toString(),
+                        style: Styles.poppins16w400
+                            .copyWith(color: Styles.primaryColor),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -211,12 +234,14 @@ class _ViewOrderState extends State<ViewOrder> {
                                 ))
                             .toList(),
                       ),
+                      const Gap(10),
                     ],
                   ),
                 ),
               );
             },
-          ))
+          )),
+          // const Gap(50),
         ],
       ),
     );

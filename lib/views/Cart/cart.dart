@@ -637,6 +637,8 @@ class _CartState extends State<Cart> {
                           "totalprice": totalprice,
                           "kots": [cartController.tableKot[tableId]!.toJson()]
                         }));
+
+                        
                         Get.snackbar("Order Taken $orderId",
                             "Order taken on Table $tableId",
                             backgroundColor:
